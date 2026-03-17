@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>实时视频流</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: black; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            overflow: hidden;
+        }
+        img { 
+            max-width: 100vw; 
+            max-height: 100vh; 
+            object-fit: contain; 
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('video_feed') }}" id="video-stream">
+    <script>
+        setInterval(() => {
+            const img = document.getElementById('video-stream');
+            if (img.naturalWidth === 0) {
+                console.log("重新连接视频流...");
+                img.src = img.src.split('?')[0] + '?t=' + new Date().getTime();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

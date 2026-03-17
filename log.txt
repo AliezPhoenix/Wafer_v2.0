@@ -1,0 +1,846 @@
+2025-09-11 19:52:31,873 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-11 19:52:33,198 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-11 19:52:33,198 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-11 19:52:33,202 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-11 19:52:33,641 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-11 19:52:33,642 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-11 19:52:33,732 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.3.35:5000
+2025-09-11 19:52:33,732 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 19:52:34,204 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:52:34,205 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:52:34,205 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:52:39,213 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:52:41,368 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:52:41,369 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:52:41,370 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:52:43,285 - Web_Display - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 30, in index
+    return render_template('templates\stream.html')
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "d:\DATA\Python\lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: templates\stream.html
+2025-09-11 19:52:43,293 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 19:52:43] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-11 19:52:43,413 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 19:52:43] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-11 19:52:46,374 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:52:48,510 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:52:48,510 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:52:48,512 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:52:53,524 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:52:55,646 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:52:55,647 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:52:55,647 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:53:00,662 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:53:02,133 - Web_Display - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 30, in index
+    return render_template('templates\stream.html')
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "d:\DATA\Python\lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: templates\stream.html
+2025-09-11 19:53:02,135 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 19:53:02] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-11 19:53:02,799 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:53:02,800 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:53:02,800 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:53:07,807 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:53:09,967 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:53:09,969 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:53:09,970 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:53:14,985 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:53:17,099 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:53:17,100 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:53:17,101 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:56:16,855 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-11 19:56:17,972 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-11 19:56:17,972 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-11 19:56:17,975 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-11 19:56:18,479 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-11 19:56:18,481 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-11 19:56:18,517 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.3.35:5000
+2025-09-11 19:56:18,519 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 19:56:18,981 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:56:18,983 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:56:18,984 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:56:23,657 - Web_Display - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 31, in index
+    return render_template(path)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "d:\DATA\Python\lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: .\templates/stream.html
+2025-09-11 19:56:23,664 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 19:56:23] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-11 19:56:23,795 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 19:56:23] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-11 19:56:23,994 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:56:26,098 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:56:26,099 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:56:26,100 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:56:31,111 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:56:33,236 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:56:33,236 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:56:33,238 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:56:38,246 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:56:40,339 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:56:40,340 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:56:40,340 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:58:32,604 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-11 19:58:33,710 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-11 19:58:33,710 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-11 19:58:33,713 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-11 19:58:34,160 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-11 19:58:34,161 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-11 19:58:34,188 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.3.35:5000
+2025-09-11 19:58:34,188 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 19:58:34,714 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:58:34,714 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:58:34,715 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 19:58:38,224 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 19:58:38] "GET / HTTP/1.1" 200 -
+2025-09-11 19:58:39,717 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 19:58:39,798 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 19:58:39] "GET /video_feed HTTP/1.1" 200 -
+2025-09-11 19:58:41,830 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 19:58:41,831 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 19:58:41,831 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:09:33,442 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-11 20:09:36,592 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-11 20:09:36,593 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-11 20:09:36,595 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-11 20:09:37,090 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-11 20:09:37,106 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-11 20:09:37,189 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.3.35:5000
+2025-09-11 20:09:37,190 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 20:09:37,605 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:09:37,605 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:09:37,607 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:09:38,754 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:09:38] "GET /video_feed?t=1757592575188 HTTP/1.1" 200 -
+2025-09-11 20:09:42,613 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 20:09:42,619 - Web_Display - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 30, in index
+    return render_template('./templates/stream.html')
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "d:\DATA\Python\lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./templates/stream.html
+2025-09-11 20:09:42,623 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:09:42] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-11 20:09:44,631 - Web_Display - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 30, in index
+    return render_template('./templates/stream.html')
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "d:\DATA\Python\lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./templates/stream.html
+2025-09-11 20:09:44,634 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:09:44] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-11 20:09:44,728 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:09:44,729 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:09:44,729 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:09:46,691 - Web_Display - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "d:\DATA\Python\lib\site-packages\flask\app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 30, in index
+    return render_template('./templates/stream.html')
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "d:\DATA\Python\lib\site-packages\jinja2\environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "d:\DATA\Python\lib\site-packages\jinja2\loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "d:\DATA\Python\lib\site-packages\flask\templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: ./templates/stream.html
+2025-09-11 20:09:46,694 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:09:46] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2025-09-11 20:09:49,735 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 20:09:51,861 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:09:51,861 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:09:51,863 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:10:07,686 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-11 20:10:08,799 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-11 20:10:08,799 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-11 20:10:08,804 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-11 20:10:09,295 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-11 20:10:09,296 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-11 20:10:09,329 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.3.35:5000
+2025-09-11 20:10:09,330 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 20:10:09,808 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:10:09,808 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:10:09,809 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:10:14,076 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:10:14] "GET / HTTP/1.1" 200 -
+2025-09-11 20:10:14,816 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 20:10:15,622 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:10:15] "GET /video_feed HTTP/1.1" 200 -
+2025-09-11 20:10:16,922 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:10:16,923 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:10:16,924 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:10:21,938 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 20:10:24,069 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:10:24,070 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:10:24,071 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:10:29,087 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 20:10:31,206 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:10:31,207 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:10:31,208 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:10:36,212 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 20:10:38,343 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:10:38,344 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:10:38,345 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:15:21,803 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-11 20:15:22,905 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-11 20:15:22,906 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-11 20:15:22,909 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-11 20:15:23,358 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-11 20:15:23,359 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-11 20:15:23,437 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-11 20:15:23,437 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-11 20:15:23,912 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:15:23,913 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:15:23,913 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:15:28,922 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-11 20:15:29,852 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:15:29] "GET / HTTP/1.1" 200 -
+2025-09-11 20:15:31,021 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-11 20:15:31,022 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-11 20:15:31,023 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-11 20:15:31,421 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:15:31] "GET /video_feed HTTP/1.1" 200 -
+2025-09-11 20:15:32,965 - werkzeug - INFO - 127.0.0.1 - - [11/Sep/2025 20:15:32] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 14:19:21,731 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 14:19:22,873 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 14:19:22,874 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 14:19:22,876 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 14:19:23,415 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 14:19:23,416 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 14:19:23,455 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 14:19:23,456 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 14:19:23,884 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 14:19:23,884 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 14:19:23,885 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 14:19:28,895 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 14:19:30,061 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 14:19:30] "GET / HTTP/1.1" 200 -
+2025-09-12 14:19:31,017 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 14:19:31,017 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 14:19:31,018 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 14:19:31,634 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 14:19:31] "GET /video_feed HTTP/1.1" 200 -
+2025-09-12 14:19:33,195 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 14:19:33] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 14:19:36,032 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 14:19:38,163 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 14:19:38,165 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 14:19:38,166 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 14:20:49,797 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 14:20:50,894 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 14:20:50,895 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 14:20:50,898 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 14:20:51,332 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 14:20:51,333 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 14:20:51,490 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 14:20:51,490 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 14:20:51,906 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 14:20:51,907 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 14:20:51,907 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 14:20:53,176 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 14:20:53] "GET /video_feed?t=1757658050085 HTTP/1.1" 200 -
+2025-09-12 14:20:56,916 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 14:20:59,027 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 14:20:59,028 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 14:20:59,028 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 14:21:00,440 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 14:21:00] "GET / HTTP/1.1" 200 -
+2025-09-12 14:21:01,988 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 14:21:01] "GET /video_feed HTTP/1.1" 200 -
+2025-09-12 14:21:04,036 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 14:21:06,162 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 14:21:06,163 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 14:21:06,164 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 14:21:11,176 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 14:21:13,292 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 14:21:13,292 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 14:21:13,293 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:43:03,629 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 16:43:04,480 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 16:43:04,481 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 16:43:04,485 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 16:43:04,945 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 16:43:04,955 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 16:43:05,051 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:43:05,069 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:43:05,083 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 16:43:05,083 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 16:43:05,093 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:43:10,101 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:43:11,095 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:43:30,124 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:43:30] "GET / HTTP/1.1" 200 -
+2025-09-12 16:43:30,206 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:43:30] "[35m[1mGET /video_feed HTTP/1.1[0m" 500 -
+2025-09-12 16:43:30,246 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 333, in execute
+    for data in application_iter:
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 63, in generate_frames
+    yield (b'--frame\r\n'
+numpy._core._exceptions._UFuncNoLoopError: ufunc 'add' did not contain a loop with signature matching types (dtype('S37'), dtype('uint8')) -> None
+2025-09-12 16:43:30,325 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:43:30] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 16:43:35,981 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:43:35] "[35m[1mGET /video_feed?t=1757666615950 HTTP/1.1[0m" 500 -
+2025-09-12 16:43:35,984 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 333, in execute
+    for data in application_iter:
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 63, in generate_frames
+    yield (b'--frame\r\n'
+numpy._core._exceptions._UFuncNoLoopError: ufunc 'add' did not contain a loop with signature matching types (dtype('S37'), dtype('uint8')) -> None
+2025-09-12 16:43:37,593 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:43:40,990 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:43:40] "[35m[1mGET /video_feed?t=1757666620959 HTTP/1.1[0m" 500 -
+2025-09-12 16:43:40,994 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 333, in execute
+    for data in application_iter:
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 63, in generate_frames
+    yield (b'--frame\r\n'
+numpy._core._exceptions._UFuncNoLoopError: ufunc 'add' did not contain a loop with signature matching types (dtype('S37'), dtype('uint8')) -> None
+2025-09-12 16:43:42,600 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:43:43,978 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:43:43,979 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:43:44,162 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:43:45,976 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:43:45] "[35m[1mGET /video_feed?t=1757666625952 HTTP/1.1[0m" 500 -
+2025-09-12 16:43:45,980 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 333, in execute
+    for data in application_iter:
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 63, in generate_frames
+    yield (b'--frame\r\n'
+numpy._core._exceptions._UFuncNoLoopError: ufunc 'add' did not contain a loop with signature matching types (dtype('S37'), dtype('uint8')) -> None
+2025-09-12 16:43:49,179 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:43:49,443 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:43:49,443 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:43:49,628 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:43:50,991 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:43:50] "[35m[1mGET /video_feed?t=1757666630944 HTTP/1.1[0m" 500 -
+2025-09-12 16:43:50,995 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 333, in execute
+    for data in application_iter:
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 63, in generate_frames
+    yield (b'--frame\r\n'
+numpy._core._exceptions._UFuncNoLoopError: ufunc 'add' did not contain a loop with signature matching types (dtype('S37'), dtype('uint8')) -> None
+2025-09-12 16:43:54,640 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:43:54,906 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:43:54,910 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:43:55,093 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:43:55,988 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:43:55] "[35m[1mGET /video_feed?t=1757666635958 HTTP/1.1[0m" 500 -
+2025-09-12 16:43:55,991 - werkzeug - ERROR - Error on request:
+Traceback (most recent call last):
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 370, in run_wsgi
+    execute(self.server.app)
+  File "d:\DATA\Python\lib\site-packages\werkzeug\serving.py", line 333, in execute
+    for data in application_iter:
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wsgi.py", line 256, in __next__
+    return self._next()
+  File "d:\DATA\Python\lib\site-packages\werkzeug\wrappers\response.py", line 32, in _iter_encoded
+    for item in iterable:
+  File "D:\DATA\Wafer_Rebuild\Wafer_Rebuild\Web_Display.py", line 63, in generate_frames
+    yield (b'--frame\r\n'
+numpy._core._exceptions._UFuncNoLoopError: ufunc 'add' did not contain a loop with signature matching types (dtype('S37'), dtype('uint8')) -> None
+2025-09-12 16:43:56,116 - root - WARNING - ÖØÆôÊ§°Ü,³¢ÊÔ´ÎÊı£º1´Î
+2025-09-12 16:43:56,272 - root - WARNING - ÖØÆôÊ§°Ü,³¢ÊÔ´ÎÊı£º2´Î
+2025-09-12 16:46:18,373 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 16:46:19,093 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 16:46:19,093 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 16:46:19,098 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 16:46:19,599 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 16:46:19,600 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 16:46:19,677 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 16:46:19,678 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 16:46:19,768 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:46:19,815 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:46:19] "GET /video_feed?t=1757666779683 HTTP/1.1" 200 -
+2025-09-12 16:46:22,735 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:46:22] "GET / HTTP/1.1" 200 -
+2025-09-12 16:46:22,810 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:46:22] "GET /video_feed HTTP/1.1" 200 -
+2025-09-12 16:46:26,161 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:46:31,166 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:46:32,158 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:46:32,161 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:46:32,168 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:57:16,541 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 16:57:17,335 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 16:57:17,335 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 16:57:17,340 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 16:57:17,822 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 16:57:17,828 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 16:57:17,860 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 16:57:17,861 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 16:57:18,014 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:57:18,015 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:57:18,196 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:57:19,501 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:57:19] "GET /video_feed?t=1757667435950 HTTP/1.1" 200 -
+2025-09-12 16:57:22,473 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:57:22] "GET /video_feed?t=1757667440956 HTTP/1.1" 200 -
+2025-09-12 16:57:23,201 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:57:24,186 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:57:24,186 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:57:24,187 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:57:29,198 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:57:30,476 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:57:30,476 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:57:30,477 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:57:35,486 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:57:35,565 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:57:35,566 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:57:35,566 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:57:40,579 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:57:40,639 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:57:40,640 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:57:40,647 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:57:45,660 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:57:45,728 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:57:45,729 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:57:45,729 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:57:50,746 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:57:50,817 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:57:50,818 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:57:50,820 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:57:55,831 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:57:55,903 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:57:55,905 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:57:55,905 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:58:29,513 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 16:58:30,256 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 16:58:30,257 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 16:58:30,261 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 16:58:30,778 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 16:58:30,779 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 16:58:30,819 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 16:58:30,819 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 16:58:30,991 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:58:30,991 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:58:31,177 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:58:32,483 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:58:32] "GET /video_feed?t=1757667510947 HTTP/1.1" 200 -
+2025-09-12 16:58:55,290 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 16:58:55,874 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 16:58:55,874 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 16:58:55,881 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 16:58:56,360 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 16:58:56,364 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 16:58:56,408 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 16:58:56,409 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 16:58:56,621 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:58:56,622 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:58:56,802 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:59:01,817 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:59:02,723 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:59:02,724 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:59:02,725 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:59:07,729 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:59:09,161 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:59:09,162 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:59:09,163 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:59:33,152 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 16:59:33,748 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 16:59:33,749 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 16:59:33,755 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 16:59:34,250 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 16:59:34,251 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 16:59:34,306 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 16:59:34,307 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 16:59:34,504 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:59:34,504 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:59:34,688 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:59:39,695 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:59:40,609 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:59:40,611 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:59:40,611 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:59:45,488 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 16:59:45] "GET /video_feed?t=1757667583955 HTTP/1.1" 200 -
+2025-09-12 16:59:45,624 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:59:46,744 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:59:46,745 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:59:46,745 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:59:51,770 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:59:51,847 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:59:51,848 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:59:51,848 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 16:59:56,855 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 16:59:56,983 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 16:59:56,985 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 16:59:56,987 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:01:01,925 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 17:01:02,008 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 17:01:02,009 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 17:01:02,013 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 17:01:02,459 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 17:01:02,461 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 17:01:02,519 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 17:01:02,520 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 17:01:02,675 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:01:02,675 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:01:02,862 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:01:07,871 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:01:07,982 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:01:07,983 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:01:07,984 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:01:12,986 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:01:13,095 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:01:13,097 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:01:13,097 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:01:18,111 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:01:18,190 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:01:18,192 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:01:18,198 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:01:43,488 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 17:01:43,563 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 17:01:43,564 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 17:01:43,567 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 17:01:44,017 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 17:01:44,022 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 17:01:44,075 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 17:01:44,076 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 17:01:44,231 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:01:44,233 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:01:44,418 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:01:45,762 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 17:01:45] "GET /video_feed?t=1757667703952 HTTP/1.1" 200 -
+2025-09-12 17:01:49,426 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:01:49,519 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:01:49,520 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:01:49,520 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:04:25,702 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 17:04:25,789 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 17:04:25,790 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 17:04:25,793 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 17:04:26,247 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 17:04:26,248 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 17:04:26,363 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 17:04:26,363 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 17:04:26,515 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:04:26,515 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:04:26,700 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:04:31,708 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:04:31,850 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:04:31,851 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:04:31,880 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:04:36,888 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:04:37,061 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:04:37,063 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:04:37,092 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:04:42,109 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:04:42,262 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:04:42,264 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:04:42,281 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:04:45,475 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 17:04:45] "GET /video_feed?t=1757667883953 HTTP/1.1" 200 -
+2025-09-12 17:04:47,292 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:04:47,426 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:04:47,426 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:04:47,461 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:06:11,337 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 17:06:11,420 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 17:06:11,420 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 17:06:11,423 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 17:06:11,867 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 17:06:11,875 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 17:06:11,921 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 17:06:11,922 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 17:06:12,197 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:06:12,198 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:06:12,380 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:06:44,850 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 17:06:44,931 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 17:06:44,932 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 17:06:44,934 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 17:06:45,371 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 17:06:45,375 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed', '/status']
+2025-09-12 17:06:45,429 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 17:06:45,429 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 17:06:45,594 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:06:45,594 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:06:45,779 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:06:47,009 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 17:06:47] "GET /video_feed?t=1757668003959 HTTP/1.1" 200 -
+2025-09-12 17:06:50,784 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:06:50,905 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:06:50,906 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:06:50,929 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:10:14,370 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 17:10:14,458 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 17:10:14,459 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 17:10:14,461 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 17:10:14,955 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 17:10:14,956 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed']
+2025-09-12 17:10:15,045 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 17:10:15,046 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 17:10:15,206 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:10:15,206 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:10:15,390 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:10:20,212 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 17:10:20] "GET /video_feed?t=1757668218674 HTTP/1.1" 200 -
+2025-09-12 17:10:20,353 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 17:10:20] "GET / HTTP/1.1" 200 -
+2025-09-12 17:10:20,395 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:10:20,499 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:10:20,500 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:10:20,518 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:10:21,890 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 17:10:21] "GET /video_feed HTTP/1.1" 200 -
+2025-09-12 17:10:25,529 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:10:25,699 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:10:25,699 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:10:25,729 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 17:10:30,730 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 17:10:30,902 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 17:10:30,902 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 17:10:30,912 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:38:07,513 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 18:38:07,598 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 18:38:07,598 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 18:38:07,602 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 18:38:08,066 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 18:38:08,067 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed']
+2025-09-12 18:38:08,277 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:38:08,277 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:38:08,462 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:38:09,362 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 18:38:09,363 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 18:38:13,474 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 18:38:13,609 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:38:13,610 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:38:13,644 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:38:17,764 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 18:38:17] "GET / HTTP/1.1" 200 -
+2025-09-12 18:38:18,646 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 18:38:18,818 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:38:18,819 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:38:18,853 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:38:19,330 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 18:38:19] "GET /video_feed HTTP/1.1" 200 -
+2025-09-12 18:38:20,865 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 18:38:20] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-12 18:38:23,868 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 18:38:24,008 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:38:24,008 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:38:24,028 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:38:29,042 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 18:38:29,204 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:38:29,205 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:38:29,229 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:39:04,240 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 18:39:04,326 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 18:39:04,328 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 18:39:04,333 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 18:39:04,805 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 18:39:04,811 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed']
+2025-09-12 18:39:05,013 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:39:05,013 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:39:05,198 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:39:06,118 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 18:39:06,118 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-09-12 18:39:09,451 - werkzeug - INFO - 127.0.0.1 - - [12/Sep/2025 18:39:09] "GET /video_feed?t=1757673547927 HTTP/1.1" 200 -
+2025-09-12 18:39:10,210 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 18:39:10,349 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:39:10,349 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:39:10,381 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:39:15,382 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 18:39:15,552 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:39:15,552 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:39:15,572 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:39:20,588 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 18:39:20,730 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:39:20,731 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:39:20,740 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 18:39:25,749 - root - INFO - ³¢ÊÔÖØÆô£¬ÖØÆô´ÎÊı£º1´Î
+2025-09-12 18:39:25,968 - root - ERROR - Í¼Ïñ»ñÈ¡Ê§°Ü
+2025-09-12 18:39:25,969 - root - INFO - ÇĞ¸î»úÊÓ¾õÈí¼şÆô¶¯
+2025-09-12 18:39:25,994 - root - ERROR - Ïß³Ì¶Ï¿ªÍË³ö
+2025-09-12 19:39:53,900 - root - WARNING - É¾³ıÏß³ÌÊ§°Ü
+2025-09-12 19:39:53,988 - root - INFO - WorkThreadÒÑÉèÖÃµ½Web_DisplayÄ£¿é
+2025-09-12 19:39:53,989 - root - INFO - Ê¹ÓÃWeb_DisplayÄ£¿éµÄFlaskÓ¦ÓÃ
+2025-09-12 19:39:53,992 - root - INFO - Web·şÎñÆ÷ÒÑÆô¶¯£¬·ÃÎÊµØÖ·: http://localhost:5000
+2025-09-12 19:39:54,476 - root - INFO - ÕıÔÚÆô¶¯Web·şÎñÆ÷£¬FlaskÓ¦ÓÃ: <Flask 'Web_Display'>
+2025-09-12 19:39:54,480 - root - INFO - WebÓ¦ÓÃÂ·ÓÉ: ['/static/<path:filename>', '/', '/video_feed']
+2025-09-12 19:39:54,524 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.6:5000
+2025-09-12 19:39:54,525 - werkzeug - INFO - [33mPress CTRL+C to quit[0m

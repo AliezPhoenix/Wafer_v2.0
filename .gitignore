@@ -1,0 +1,70 @@
+# IDE
+.vs/
+.idea/
+.vscode/
+
+# Python cache and artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/
+*.spec
+
+# Logs and temp files
+*.lib
+*.dll
+*.log
+*.tmp
+*.temp
+
+# Binary and compiled files
+*.pyd
+*.so
+*.obj
+*.exe
+
+# Images (non-source assets)
+*.bmp
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.tif
+*.tiff
+*.webp
+
+# Spreadsheets and office files
+*.xls
+*.xlsx
+*.csv
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+
+# Large / generated data directories
+Data_cutting_path/
+Data_Layout/
+Data_M/
+Data_Template/
+Data_Template_Match/
+Data_SD/
+Data_test/
+Data_X_Ray/
+Data_failed/
+Data_scrach/
+Image/
+!Dll/Template_Match_Dll.dll
+!Dll/Template_Match_Dll.lib
