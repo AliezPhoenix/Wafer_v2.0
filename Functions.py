@@ -882,7 +882,7 @@ def template_match(image: np.ndarray, template: np.ndarray, template_standard: f
     min_distance = float('inf')
     loc = np.where(match_result >= template_standard)
 
-    for y, x in zip(*loc[::-1]):
+    for y, x in zip(*loc):
         q = match_result[y, x]
         cx = x + int(template_width / 2)
         cy = y + int(template_hight / 2)
