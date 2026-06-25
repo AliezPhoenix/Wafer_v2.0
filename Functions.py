@@ -870,30 +870,32 @@ def template_match(image: np.ndarray, template: np.ndarray, template_standard: f
     template_width = template.shape[1]
     template_hight = template.shape[0]
     img_center = [int(image_width/2),int(image_hight/2)]
-    points = []
-    closest_template = [0,0,0,0]
-    temp = 9999
 
     match_result = cv.matchTemplate(image,template,cv.TM_CCOEFF_NORMED)
     min_val,max_val,min_loc,max_loc = cv.minMaxLoc(match_result)
-    loc = np.where(match_result >= max_val-0.01)
 
+    if max_val < template_standard:
+        return 2, "无目标图像: Q值未达到设定值", [0, 0, max_val, 0]
 
-    for i in zip(*loc[::-1]):
-        points.append((i[0]+int(template_width/2),i[1]+int(template_hight/2)))
-    if len(points) == 0:
-        return 1,"无目标图像",closest_template
-    if max_val<template_standard:
-        closest_template[2] = max_val
-        return 1, "无目标图像: Q值未达到设定值",closest_template
-    for each_template in points:
-        distence = np.sqrt(math.pow(abs(each_template[0]-img_center[0]),2)+ math.pow(abs(each_template[1]-img_center[1]),2))
-        if distence <= temp:
-            temp = distence
-            closest_template[0] = each_template[0]
-            closest_template[1] = each_template[1]
-    closest_template[2] = max_val
-    return 0,"模板匹配成功",closest_template
+    best_point = None
+    best_q = 0.0
+    min_distance = float('inf')
+    loc = np.where(match_result >= template_standard)
+
+    for y, x in zip(*loc[::-1]):
+        q = match_result[y, x]
+        cx = x + int(template_width / 2)
+        cy = y + int(template_hight / 2)
+        distance = np.sqrt((cx - img_center[0])**2 + (cy - img_center[1])**2)
+        if distance < min_distance:
+            min_distance = distance
+            best_point = (cx, cy)
+            best_q = float(q)
+
+    if best_point is None:
+        return 1, "无目标图像", [0, 0, 0, 0]
+
+    return 0, "模板匹配成功", [best_point[0], best_point[1], best_q, 0]
 
 def insert_text(image: np.ndarray, text: Union[str, List], start_po: int, font_size: float, color: Tuple[int, int, int], mode: str, color_list: Optional[List[Tuple[int, int, int]]] = None) -> np.ndarray:
 
