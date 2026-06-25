@@ -9,21 +9,22 @@ import ctypes as C
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from typing import List, Tuple, Union, Optional
+import logging
+import time
 
-# 弧度到度数的转换常量
-R2D = 180.0 / math.pi
 
-def Data_to_hex_relabled(Adress: str) -> str:
+def Data_to_hex_relabled(Adress):
     Write_Data = Adress[-4:][2:4]+Adress[-4:][0:2]
     return Write_Data
 
-def hexStr_to_str(hex_str: str) -> str:
+
+def hexStr_to_str(hex_str):
     hex = hex_str.encode("utf-8")
     str_bin = binascii.unhexlify(hex)
     return str_bin.decode("utf-8")
 
-def CircleCut(Img: np.ndarray, Center: Tuple[int, int], Radius: int, shape: str) -> np.ndarray:
+
+def CircleCut(Img,Center,Radius,shape):
     mask = np.full((Img.shape[0], Img.shape[1]), 0, dtype=np.uint8) 
     # create circle mask, center, radius, fill color, size of the border
     if shape == "Circle":
@@ -39,7 +40,8 @@ def CircleCut(Img: np.ndarray, Center: Tuple[int, int], Radius: int, shape: str)
 
     return final
 
-def Creat_Block(size: Tuple[int, int], Cline: str, sp: int, kerf: int, corr: int, color: Tuple[int, int, int], current: int) -> np.ndarray:
+
+def Creat_Block(size,Cline,sp,kerf,corr,color,current):
     Img_Width = size[0]
     Img_Hight = size[1]
     white = (255,255,255)
@@ -89,10 +91,15 @@ def Creat_Block(size: Tuple[int, int], Cline: str, sp: int, kerf: int, corr: int
     cv.line(block,(0,0),(0,200),black,5,cv.LINE_8)
     return block
 
-def Cutting_Info(size: Tuple[int, int], y_pos: List[List], selected_path: int, current_path: List[int]) -> np.ndarray:
+
+def Cutting_Info(size,y_pos,selected_path,current_path):
+    Img_Width = size[0]
+    Img_Hight = size[1]
     Img = 0
     block = 0
     count =0
+    
+    white = (255,255,255)
     blue = (255,255,51)
     yellow =(0,255,255)
     pink = (203,0,255)
@@ -145,7 +152,8 @@ def Cutting_Info(size: Tuple[int, int], y_pos: List[List], selected_path: int, c
     Img = cv.resize(Img,size)
     return Img
 
-def Animation_Y_POS(img_size: Tuple[int, int], y_pos: List[List], current_path_sp: List[int], current_x: int, selected_path: int, zoom_size: int, if_cut: int, shape: str, Scale: float) -> Tuple[np.ndarray, List[List]]:
+
+def Animation_Y_POS(img_size,y_pos,current_path_sp,current_x,selected_path,zoom_size,if_cut,shape,Scale):
     Img_Width = 1000
     Img_Hight = 1000
     Img_Center = (int(Img_Width/2),int(Img_Hight/2))
@@ -306,7 +314,8 @@ def Animation_Y_POS(img_size: Tuple[int, int], y_pos: List[List], current_path_s
     Img = np.hstack([Img,Img_Info])
     return Img,y_pos
 
-def Display_Devide(Img: np.ndarray, size: int, start_po: int, Img_Display: np.ndarray, border_swtich: bool, border_color: Tuple[int, int, int]) -> np.ndarray: 
+
+def Display_Devide(Img,size,start_po,Img_Display,border_swtich,border_color): 
 
     Img_Width = len(Img[0])
     Img_Hight = len(Img)  
@@ -387,7 +396,8 @@ def Display_Devide(Img: np.ndarray, size: int, start_po: int, Img_Display: np.nd
 
     return Img_Display
 
-def Mark_image(image: np.ndarray, marks: int, Command_Target_Window_Width: int, Command_Target_Window_Hight: int, Command_StandardLine_Hight: int, Command_CuttingLine_Hight: int) -> np.ndarray:
+
+def Mark_image(image:np.ndarray,marks,Command_Target_Window_Width,Command_Target_Window_Hight,Command_StandardLine_Hight,Command_CuttingLine_Hight):
     center_cross = 0
     target_window = 0
     center_line = 0
@@ -447,7 +457,8 @@ def Mark_image(image: np.ndarray, marks: int, Command_Target_Window_Width: int, 
     
     return image
 
-def Passcode_Check(input: str) -> bool:
+
+def Passcode_Check(input):
     PassCode = wmi.WMI().Win32_Processor()[0].ProcessorId.strip() + "415263"  + wmi.WMI().Win32_DiskDrive()[0].SerialNumber.strip()
     PassCode_md5 = hashlib.md5(PassCode.encode("gb2312"))
     PassCode_md5 = PassCode_md5.hexdigest()
@@ -457,7 +468,8 @@ def Passcode_Check(input: str) -> bool:
     else:
         return False
 
-def conn_ftp() -> Tuple[int, FTP]:
+
+def conn_ftp():
     ftp_ip = "192.168.1.5"
     ftp_port = 21
     ftp_user = "Qrobot"
@@ -465,353 +477,34 @@ def conn_ftp() -> Tuple[int, FTP]:
 
     ftp = FTP()
     try:
-        # 设置连接超时和传输超时
-        ftp.connect(ftp_ip, ftp_port, timeout=10)
-        ftp.login(ftp_user, ftp_pw)
-        ftp.set_pasv(True)  # 使用被动模式
+        ftp.connect(ftp_ip,ftp_port)
+        ftp.login(ftp_user,ftp_pw)
         print(ftp.getwelcome())
-        return 1, ftp
-    except Exception as e:
-        print(f"FTP连接失败: {e}")
-        try:
-            ftp.quit()
-        except:
-            pass
-        return 0, ftp
+    except:
+        return 0,ftp
+    return 1,ftp
 
-def download_file(ftp: FTP, remotepath: str, local_path: str, filename: str) -> str:
+def download_file(ftp,remotepath,local_path,filename):
     bufsize = 2048
-    max_retries = 3
-    retry_count = 0
-    
-    while retry_count < max_retries:
-        try:
-            # 检查连接是否仍然有效
-            ftp.voidcmd("NOOP")
-            
-            ftp.cwd(remotepath)
-            local_path = local_path + "/" + filename
-            
-            with open(local_path, 'wb') as fp:
-                ftp.retrbinary('RETR ' + filename, fp.write, bufsize)
-            
-            ftp.cwd("..")
-            return "OK"
-            
-        except Exception as e:
-            retry_count += 1
-            print(f"FTP下载失败 (尝试 {retry_count}/{max_retries}): {e}")
-            
-            if retry_count < max_retries:
-                try:
-                    # 尝试重新连接
-                    ftp.quit()
-                except:
-                    pass
-                
-                # 重新建立连接
-                ret, ftp = conn_ftp()
-                if ret == 0:
-                    print("无法重新建立FTP连接")
-                    return "NG"
-            else:
-                return "NG"
-    
-    return "NG"
-
-def remove_duplicates(points: List[Tuple[int, int]], min_distance: int = 30)->Tuple[int, str, List[Tuple[int, int]]]:
-    """
-    去除重复的模板匹配点
-    Args:
-        points: 匹配点列表 [(x1,y1), (x2,y2), ...]
-        min_distance: 最小距离阈值，小于此距离的点被认为是重复的
-    Returns:
-        (ret, retcontent, unique_points): 返回状态码、描述信息和去重后的点列表
-    """
     try:
-        if len(points) <= 1:
-            return 0, "去重完成", points
-        
-        # 转换为numpy数组便于计算
-        points_array = np.array(points)
-        unique_points = []
-        used_indices = set()
-        
-        for i, point in enumerate(points_array):
-            if i in used_indices:
-                continue
-            # 计算当前点到所有其他点的距离
-            distances = np.sqrt(np.sum((points_array - point)**2, axis=1))
-            
-            # 找到距离小于阈值的所有点
-            close_indices = np.where(distances < min_distance)[0]
-            
-            # 如果只有一个点（自己），直接添加
-            if len(close_indices) == 1:
-                unique_points.append(tuple(point))
-                used_indices.add(i)
-            else:
-                # 如果有多个相近的点，选择第一个（通常是置信度最高的）
-                unique_points.append(tuple(point))
-                used_indices.update(close_indices)
-        
-        return 0, "去重完成", unique_points
+        ftp.cwd(remotepath)
+        local_path = local_path+ "/"+ filename
+        fp = open(local_path ,'wb')
+        ftp.retrbinary('RETR '+filename,fp.write,bufsize)
+        ftp.set_debuglevel(0)
+        fp.close()
+        ftp.cwd("..")
     except Exception as e:
-        return 1, f"去重处理异常: {str(e)}", points
+        print("FTP not found: ",e)
+        return "NG"
+    return "OK"
 
-def points_to_2d_array(unique_points: List[Tuple[int, int]], template_width: int, template_height: int)->Tuple[int, str, np.ndarray]:
-    """
-    将去重后的匹配点转换为二维数组，按照模板的实际排列组织
-    Args:
-        unique_points: 去重后的匹配点列表 [(x1,y1), (x2,y2), ...]
-        template_width: 模板宽度
-        template_height: 模板高度
-    Returns:
-        (ret, retcontent, result_array): 返回状态码、描述信息和二维数组
-    """
-    try:
-        if not unique_points:
-            return 0, "转换完成", np.array([])
-        
-        # 按x坐标排序，找到最左边的点
-        sorted_by_x = sorted(unique_points, key=lambda p: p[0])
-        leftmost_x = sorted_by_x[0][0]
-        
-        # 按y坐标排序，找到最上边的点
-        sorted_by_y = sorted(unique_points, key=lambda p: p[1])
-        topmost_y = sorted_by_y[0][1]
-        
-        # 计算行间距和列间距
-        # 允许y方向有1/3个模板大小的误差
-        y_tolerance = template_height / 2
-        
-        # 按y坐标分组，相近的y坐标认为是同一行
-        rows = []
-        current_row = []
-        current_y = None
-        
-        for point in sorted(unique_points, key=lambda p: p[1]):
-            if current_y is None or abs(point[1] - current_y) <= y_tolerance:
-                # 同一行
-                current_row.append(point)
-                current_y = point[1] if current_y is None else (current_y + point[1]) / 2
-            else:
-                # 新的一行
-                if current_row:
-                    rows.append(sorted(current_row, key=lambda p: p[0]))  # 按x坐标排序
-                current_row = [point]
-                current_y = point[1]
-        
-        # 添加最后一行
-        if current_row:
-            rows.append(sorted(current_row, key=lambda p: p[0]))
-        
-        # 计算列数（取最大行的列数）
-        max_cols = max(len(row) for row in rows) if rows else 0
-        
-        # 创建二维数组
-        result_array = np.full((len(rows), max_cols), None, dtype=object)
-        
-        # 填充二维数组
-        for row_idx, row_points in enumerate(rows):
-            for col_idx, point in enumerate(row_points):
-                result_array[row_idx][col_idx] = point
-        
-        return 0, "转换完成", result_array
-    except Exception as e:
-        return 1, f"二维数组转换异常: {str(e)}", np.array([])
 
-def calculate_image_rotation_angle(points_2d_array: np.ndarray, image_center_x: int, image_center_y: int)->Tuple[int, str, float]  :
-    """
-    根据最靠近图像中心的那一行计算图像整体偏移角度
-    Args:
-        points_2d_array: 二维数组，array[row][col] 表示对应位置的匹配点
-        image_center_x: 图像中心X坐标
-        image_center_y: 图像中心Y坐标
-    Returns:
-        (ret, retcontent, angle): 返回状态码、描述信息和图像偏移角度（度）
-    """
-    try:
-        if points_2d_array.size == 0:
-            return 0, "角度计算完成", 0.0
-        
-        # 找到最靠近图像中心的那一行
-        min_distance = float('inf')
-        center_row_index = -1
-        
-        for row in range(points_2d_array.shape[0]):
-            # 计算该行所有点的平均Y坐标
-            row_points = []
-            for col in range(points_2d_array.shape[1]):
-                if points_2d_array[row][col] is not None:
-                    row_points.append(points_2d_array[row][col])
-            
-            if len(row_points) > 0:
-                # 计算该行的平均Y坐标
-                avg_y = sum(point[1] for point in row_points) / len(row_points)
-                # 计算该行到图像中心的距离
-                distance = abs(avg_y - image_center_y)
-                
-                if distance < min_distance:
-                    min_distance = distance
-                    center_row_index = row
-        
-        if center_row_index == -1:
-            return 1, "无法找到有效的行来计算角度", 0.0
-        
-        # 获取最靠近中心的那一行的所有点
-        center_row_points = []
-        for col in range(points_2d_array.shape[1]):
-            if points_2d_array[center_row_index][col] is not None:
-                center_row_points.append(points_2d_array[center_row_index][col])
-        
-        if len(center_row_points) < 3:
-            return 1, "最靠近中心的行点数不足，无法计算角度", 0.0
-        
-        # 按X坐标排序
-        center_row_points.sort(key=lambda p: p[0])
-        
-        # 计算该行的角度
-        angles = []
-        for i in range(len(center_row_points) - 1):
-            point1 = center_row_points[i]
-            point2 = center_row_points[i + 1]
-            
-            # 计算两点间的角度
-            # 以纵向中轴线为0度基准，逆时针为正，顺时针为负
-            dx = point2[0] - point1[0]  # x方向差值
-            dy = point2[1] - point1[1]  # y方向差值
-            
-            if dx != 0:  # 避免除零错误
-                # 使用atan2计算角度，以纵向为0度基准
-                angle = math.atan2(dx, dy) * R2D  # 转换为度
-                angles.append(angle)
-        
-        # 计算平均角度，排除偏差过大的数据
-        if angles:
-            # 计算所有角度的平均值
-            initial_avg = sum(angles) / len(angles)
-            
-            # 计算每个角度与平均值的偏差
-            deviations = [abs(angle - initial_avg) for angle in angles]
-            
-            # 计算标准差
-            variance = sum((angle - initial_avg) ** 2 for angle in angles) / len(angles)
-            std_dev = math.sqrt(variance)
-            
-            # 排除偏差过大的数据（超过2倍标准差的数据）
-            threshold = 2 * std_dev
-            filtered_angles = []
-            for i, angle in enumerate(angles):
-                if deviations[i] <= threshold:
-                    filtered_angles.append(angle)
-            
-            # 如果过滤后还有数据，使用过滤后的数据计算平均值
-            if filtered_angles:
-                avg_angle = sum(filtered_angles) / len(filtered_angles)
-            else:
-                # 如果所有数据都被过滤掉，使用原始平均值
-                avg_angle = initial_avg
-            
-            # 角度修正：以纵向中轴线为0度基准
-            corrected_angle = avg_angle - 90
-            
-            return 0, f"角度计算完成，使用第{center_row_index}行，该行点数: {len(center_row_points)}", corrected_angle
-        else:
-            return 1, "无法计算偏移角度：没有足够的点对数据", 0.0
-    except Exception as e:
-        return 1, f"角度计算异常: {str(e)}", 0.0
 
-def template_match_multiple(image: np.ndarray,template: np.ndarray,template_standard: float,roi: Tuple[int, int])->Tuple[int, str, List[float]]:
-    """
-    多模板匹配函数
-    Args:
-        image: 输入图像
-        template: 模板图像
-        template_standard: 模板匹配阈值
-        roi: ROI区域 [roi_x, roi_y]
-    Returns:
-        (ret, retcontent, result): 返回状态码、描述信息和匹配结果
-    """
-    try:
-        closest_template = [0,0,0,0]
-        
-        # 保存原图中心坐标
-        original_center_x = int(image.shape[1]/2)
-        original_center_y = int(image.shape[0]/2)
-        template_standard = template_standard/100
-        # 提取ROI区域
-        image = image[int(image.shape[0]/2)-roi[1]:int(image.shape[0]/2)+roi[1],int(image.shape[1]/2)-roi[0]:int(image.shape[1]/2)+roi[0]]
-        image = cv.cvtColor(image,cv.COLOR_BGR2GRAY)
-        template = cv.cvtColor(template,cv.COLOR_BGR2GRAY)
-        image_width = image.shape[1]
-        image_hight = image.shape[0]
-        roi_x = roi[0]
-        roi_y = roi[1]
-        template_width = template.shape[1]
-        template_hight = template.shape[0]
-        img_center = [int(image_width/2),int(image_hight/2)]
-        points = []
-        temp = 9999
-        
-        match_result = cv.matchTemplate(image,template,cv.TM_CCOEFF_NORMED)
-        min_val,max_val,min_loc,max_loc = cv.minMaxLoc(match_result)
-        loc = np.where(match_result >= template_standard)
-        
-        for i in zip(*loc[::-1]):
-            points.append((i[0]+int(template_width/2),i[1]+int(template_hight/2)))
-        if len(points) == 0:
-            return 1,"无目标图像",closest_template
-        if max_val<template_standard:
-            closest_template[2] = max_val
-            return 2, "无目标图像: Q值未达到设定值",closest_template
-        
-        # 应用去重算法
-        ret_dup, retcontent_dup, unique_points = remove_duplicates(points, min_distance=max(template_width,template_hight)/3)
-        if ret_dup != 0:
-            return ret_dup, f"去重处理失败: {retcontent_dup}", closest_template
-        
-        # 将去重后的结果转换为二维数组
-        ret_2d, retcontent_2d, points_2d_array = points_to_2d_array(unique_points, template_width, template_hight)
-        if ret_2d != 0:
-            return ret_2d, f"二维数组转换失败: {retcontent_2d}", closest_template
-        
-        # 计算图像整体偏移角度
-        ret_angle, retcontent_angle, rotation_angle = calculate_image_rotation_angle(points_2d_array, img_center[0], img_center[1])
-        if ret_angle != 0:
-            # 角度计算失败不影响主流程，继续执行
-            rotation_angle = 0.0
-        
-        # 找到距离中心点最近的模板
-        best_template = None
-        min_distance = float('inf')
-        
-        for each_template in unique_points:
-            template_x = each_template[0]
-            template_y = each_template[1]
-            # 计算到图像中心的距离
-            distance = np.sqrt((template_x - img_center[0])**2 + (template_y - img_center[1])**2)
-            if distance < min_distance:
-                min_distance = distance
-                best_template = each_template
-        
-        # 返回距离中心点最近的模板信息，格式与template_dll_match保持一致
-        # 将ROI坐标转换为原图坐标
-        if best_template is not None:
-            # 使用与template_dll_match相同的坐标转换方式
-            original_x = (best_template[0] - roi_x) + original_center_x
-            original_y = (best_template[1] - roi_y) + original_center_y
-            result = [original_x, original_y, max_val, rotation_angle]
-        else:
-            result = [0, 0, max_val, rotation_angle]
-        if ret_angle != 0:
-            return 2,"角度计算失败",result
-        return 0,"模板匹配成功",result
-    except Exception as e:
-        return 1, f"模板匹配异常: {str(e)}", [0,0,0,0]
-    
-def template_dll_match(image:np.ndarray,template:np.ndarray,roi_x:int,roi_y:int,dll:C.CDLL,template_standard:float) -> Tuple[int, str, List[float]]:
+def template_dll_match(image:np.ndarray,template:np.ndarray,roi_x:int,roi_y:int,dll:C.CDLL,template_standard:float):
     result = []
+    closest_template = 0
+    temp = 2000
     image = cv.cvtColor(image,cv.COLOR_BGR2GRAY)
     template = cv.cvtColor(template,cv.COLOR_BGR2GRAY)
     template_standard = template_standard/100
@@ -830,38 +523,30 @@ def template_dll_match(image:np.ndarray,template:np.ndarray,roi_x:int,roi_y:int,
             break
     #判断结果是否为空
     if len(result) == 0:
-        return 1,"无目标图像",[0,0,0,0]
+        closest_template = [0,0,0,0]
+        return 1,"无目标图像",closest_template
     
-    # 在达到设定阈值的候选中，取距整幅图像中心最近的模板
-    best_index = -1
-    min_distance = float('inf')
-    image_show = cv.cvtColor(image,cv.COLOR_GRAY2BGR)
-    for idx, each_template in enumerate(result):
-        if each_template[2] < template_standard:
+    #取最靠近的中心的模板
+    for each_template in result:
+        if each_template[2]<template_standard:
             continue
-        # 将候选点从ROI坐标映射到图像坐标后再比较与图像中心的距离
-        cand_x_img = (each_template[0] - roi_x) + img_center[0]
-        cand_y_img = (each_template[1] - roi_y) + img_center[1]
-        # 检查坐标是否为有效值
-        if np.isnan(cand_x_img) or np.isnan(cand_y_img) or \
-           np.isinf(cand_x_img) or np.isinf(cand_y_img):
-            continue
-        cv.circle(image_show,(int(cand_x_img),int(cand_y_img)),5,(0,255,0),-1)
-        distance = np.sqrt((cand_x_img - img_center[0])**2 + (cand_y_img - img_center[1])**2)
-        if distance < min_distance:
-            min_distance = distance
-            best_index = idx
+        distence = np.sqrt(math.pow(abs(each_template[0]-roi_x),2)+ math.pow(abs(each_template[1]-roi_y),2))
+        if distence <= temp:
+            temp = distence
+            closest_template = each_template
+            closest_template[0] = (closest_template[0] - roi_x) + img_center[0]
+            closest_template[1] = (closest_template[1] - roi_y) + img_center[1]
 
-    if best_index == -1:
-        max_q = max(r[2] for r in result)
-        return 2, "无目标图像: Q值未达到设定值", [0, 0, max_q, 0]
-
-    chosen = result[best_index][:]
-    chosen[0] = (chosen[0] - roi_x) + img_center[0]
-    chosen[1] = (chosen[1] - roi_y) + img_center[1]
-    return 0,"模板匹配成功",chosen
-      
-def template_match(image: np.ndarray, template: np.ndarray, template_standard: float) -> Tuple[int, str, List[float]]:
+    #判断是否全部模板都没有达到template_standard
+    if closest_template == 0:
+        closest_template = [0,0,result[0][2],0]
+        return 2, "无目标图像: Q值未达到设定值",closest_template
+    
+    closest_template[3] = result[0][3]
+    return 0,"模板匹配成功",closest_template
+    
+    
+def template_match(image,template,template_standard):
     image = cv.cvtColor(image,cv.COLOR_BGR2GRAY)
     template = cv.cvtColor(template,cv.COLOR_BGR2GRAY)
     template_standard = template_standard/100
@@ -885,17 +570,21 @@ def template_match(image: np.ndarray, template: np.ndarray, template_standard: f
         return 1,"无目标图像",closest_template
     if max_val<template_standard:
         closest_template[2] = max_val
-        return 1, "无目标图像: Q值未达到设定值",closest_template
-    for each_template in points:
-        distence = np.sqrt(math.pow(abs(each_template[0]-img_center[0]),2)+ math.pow(abs(each_template[1]-img_center[1]),2))
-        if distence <= temp:
-            temp = distence
-            closest_template[0] = each_template[0]
-            closest_template[1] = each_template[1]
+        return 2, "无目标图像: Q值未达到设定值",closest_template
+    # for each_template in points:
+    #     distence = np.sqrt(math.pow(abs(each_template[0]-img_center[0]),2)+ math.pow(abs(each_template[1]-img_center[1]),2))
+    #     if distence <= temp:
+    #         temp = distence
+    #         closest_template[0] = each_template[0]
+    #         closest_template[1] = each_template[1]
+    closest_template[0] = max_loc[0] + int(template_width/2)
+    closest_template[1] = max_loc[1] + int(template_hight/2)
     closest_template[2] = max_val
+
     return 0,"模板匹配成功",closest_template
 
-def insert_text(image: np.ndarray, text: Union[str, List], start_po: int, font_size: float, color: Tuple[int, int, int], mode: str, color_list: Optional[List[Tuple[int, int, int]]] = None) -> np.ndarray:
+
+def insert_text(image,text,start_po,font_size,color,mode):
 
     image_width = image.shape[1]
     image_hight = image.shape[0]
@@ -926,18 +615,17 @@ def insert_text(image: np.ndarray, text: Union[str, List], start_po: int, font_s
         text_half_w     = "Half  W=" + text[3]
         text_chip_max   = "ChipMax=" + text[4]
         text_c_area     = "C  Area=" + text[5] 
-
-        cv.rectangle(image,text_pos,(text_pos[0]+300,text_pos[1]+170),0,-1)
-        cv.rectangle(image,(text_pos[0],text_pos[1]+350),(text_pos[0]+300,text_pos[1]+450),0,-1)
-        cv.putText(image,text_center,(text_pos[0],text_pos[1]+40),cv.FONT_HERSHEY_TRIPLEX,font_size,color_list[0],1,cv.LINE_8)
-        cv.putText(image,text_width,(text_pos[0],text_pos[1]+80),cv.FONT_HERSHEY_TRIPLEX,font_size,color_list[1],1,cv.LINE_8)
-        cv.putText(image,text_max_w,(text_pos[0],text_pos[1]+120),cv.FONT_HERSHEY_TRIPLEX,font_size,color_list[2],1,cv.LINE_8)
-        cv.putText(image,text_half_w,(text_pos[0],text_pos[1]+160),cv.FONT_HERSHEY_TRIPLEX,font_size ,color_list[3],1,cv.LINE_8)
-        cv.putText(image,text_chip_max,(text_pos[0],text_pos[1]+400),cv.FONT_HERSHEY_TRIPLEX,font_size,color_list[4],1,cv.LINE_8)
-        cv.putText(image,text_c_area,(text_pos[0],text_pos[1]+440),cv.FONT_HERSHEY_TRIPLEX,font_size ,color_list[5],1,cv.LINE_8)
+        cv.rectangle(image,text_pos,(text_pos[0]+300,text_pos[1]+250),0,-1)
+        cv.putText(image,text_center,(text_pos[0],text_pos[1]+40),cv.FONT_HERSHEY_TRIPLEX,font_size,color,1,cv.LINE_8)
+        cv.putText(image,text_width,(text_pos[0],text_pos[1]+80),cv.FONT_HERSHEY_TRIPLEX,font_size,color,1,cv.LINE_8)
+        cv.putText(image,text_max_w,(text_pos[0],text_pos[1]+120),cv.FONT_HERSHEY_TRIPLEX,font_size,color,1,cv.LINE_8)
+        cv.putText(image,text_half_w,(text_pos[0],text_pos[1]+160),cv.FONT_HERSHEY_TRIPLEX,font_size ,color,1,cv.LINE_8)
+        cv.putText(image,text_chip_max,(text_pos[0],text_pos[1]+200),cv.FONT_HERSHEY_TRIPLEX,font_size,color,1,cv.LINE_8)
+        cv.putText(image,text_c_area,(text_pos[0],text_pos[1]+240),cv.FONT_HERSHEY_TRIPLEX,font_size ,color,1,cv.LINE_8)
     return image
 
-def Center_block(Img: np.ndarray, blockhight: int) -> np.ndarray:
+
+def Center_block(Img,blockhight):
     Img_return = cv.cvtColor(Img,cv.COLOR_BGR2GRAY)
     Img_Width = len(Img_return[0])
     Img_Hight = len(Img_return)
@@ -947,23 +635,20 @@ def Center_block(Img: np.ndarray, blockhight: int) -> np.ndarray:
     Img_return[Img_Center[1]-blockhight:Img_Center[1]+blockhight,0:Img_Width] = Img_block
     return Img_return
 
-def Largest_contour(Img: np.ndarray, edge: str) -> Tuple[List, int]:
+
+def Largest_contour(Img):
     Img_Contours,hec = cv.findContours(Img,cv.RETR_EXTERNAL,cv.CHAIN_APPROX_SIMPLE)
     temp_area = 0
     max_index = 0
     for i in range(0,len(Img_Contours)):
         area = cv.contourArea(Img_Contours[i])
-        box = cv.boundingRect(Img_Contours[i])
-        if box[1] != 0 and edge == "down":
-            continue
-        if box[1]+box[3] != Img.shape[0] and edge == "up":
-            continue
         if area >temp_area:
             max_index = i
             temp_area = area
-    return Img_Contours,max_index
+    return Img_Contours,max_index#Finde the largest contour and return its index
 
-def Cross_Detection(Img_Up: np.ndarray, Img_Down: np.ndarray) -> Tuple[Optional[int], Optional[int], np.ndarray]:
+
+def Cross_Detection(Img_Up,Img_Down):
     Img = np.vstack((Img_Up,Img_Down))
     Img_Width = len(Img[0])
     Img_Hight = len(Img) 
@@ -980,20 +665,20 @@ def Cross_Detection(Img_Up: np.ndarray, Img_Down: np.ndarray) -> Tuple[Optional[
     if len(ver_val)<41:
         return None,None,Img
     
-    for i in range(0,len(ver_val)-1):
-        if ver_val[i] >= Img_Hight-2:
+    for i in range(20,len(ver_val)-20):
+        if ver_val[i] > Img_Hight-20:
             left_edge = i
             break
-    for i in range(len(ver_val)-1,0,-1):
-        if ver_val[i] >= Img_Hight-2:
+    for i in range(len(ver_val)-20,20,-1):
+        if ver_val[i] > Img_Hight-20:
             right_edge = i
             break
     if left_edge == right_edge == 0:
         return None,None,Img
     else: 
-        return left_edge-10,right_edge+10,Img
+        return left_edge,right_edge,Img
 
-def cutting_path_detection(Img: np.ndarray) -> Tuple[int, str, np.ndarray, List[int]]:
+def cutting_path_detection(Img:np.ndarray):
     Cutting_Path_Parameters = [0,0,0,0,0,0]
     Img_Check = Img
     Img_Width_Check = len(Img_Check[0])
@@ -1031,14 +716,14 @@ def cutting_path_detection(Img: np.ndarray) -> Tuple[int, str, np.ndarray, List[
                 continue
             curren_value = int(hor_val[i])
             if curren_value> lowest_degree*1.3: #and curren_value <lowest_degree+15:
-                Cutting_Path_Edges.append(i)
+                Cutting_Path_Edges.append(i+2)
                 break
         for i in range(int(len(hor_val)/2),len(hor_val)-20):
             if i > int(len(hor_val)/2)-5 and i <int(len(hor_val)/2)+5 :
                 continue
             curren_value = int(hor_val[i])
             if curren_value> lowest_degree*1.3: #and curren_value <lowest_degree+15:
-                Cutting_Path_Edges.append(i)
+                Cutting_Path_Edges.append(i-2)
                 break
         
         Cutting_Path_Top , Cutting_Path_Bot = Cutting_Path_Edges
@@ -1100,10 +785,10 @@ def cutting_path_detection(Img: np.ndarray) -> Tuple[int, str, np.ndarray, List[
             Right_Edge = Right_Edge +10
             cv.rectangle(Up_Crack_Thresh,(Left_Edge,0),(Right_Edge,30),0,-1,cv.LINE_8)
             cv.rectangle(Down_Crack_Thresh,(Left_Edge,3),(Right_Edge,33),0,-1,cv.LINE_8)
-        Up_Crack_Contours, Up_Crack_Index =  Largest_contour(Up_Crack_Thresh,"up")
+        Up_Crack_Contours, Up_Crack_Index =  Largest_contour(Up_Crack_Thresh)
         Up_Crack = cv.cvtColor(Up_Crack,cv.COLOR_GRAY2BGR)
     
-        Down_Crack_Contours,Down_Crack_Index =  Largest_contour(Down_Crack_Thresh,"down")
+        Down_Crack_Contours,Down_Crack_Index =  Largest_contour(Down_Crack_Thresh)
         Down_Crack = cv.cvtColor(Down_Crack,cv.COLOR_GRAY2BGR)
 
         Up_rect = cv.boundingRect(Up_Crack_Contours[Up_Crack_Index])
@@ -1147,235 +832,8 @@ def cutting_path_detection(Img: np.ndarray) -> Tuple[int, str, np.ndarray, List[
 
     return 0,"切痕检查完成",Img_Check,Cutting_Path_Parameters
 
-def cutting_path_reflection(Img: np.ndarray, roi: List[int], method: str = "std") -> Tuple[int, str, np.ndarray, List[int]]:
-    """
-    完善后的反射切割道检测函数，与cutting_path_detection保持一致的处理逻辑
-    """
-    
-    Cutting_Path_Parameters = [0,0,0,0,0,0]
-    image = Img.copy()
-    # 灰度保护
-    if len(image.shape) == 3 and image.shape[2] == 3:
-        image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-    image_width = image.shape[1]
-    image_hight = image.shape[0]
-    image_center = [int(image_width/2),int(image_hight/2)]
 
-    check_roi = roi 
-    # 使用传入的roi参数
-    image_check = image[image_center[1]-check_roi[1]:image_center[1]+check_roi[1], 
-                  image_center[0]-check_roi[0]:image_center[0]+check_roi[0]]
-    image_mean = np.mean(image_check)
-    
-    #将 image_mask 转换为 uint8 类型
-    if method == "std":
-        image_mask = np.where(image_check >= image_mean, 255, 0).astype(np.uint8)
-    elif method == "reflection":
-        image_mask = np.where(image_check <= image_mean-10, 255, 0).astype(np.uint8)
-    
-    # 使用掩码提取感兴趣区域
-    image_check_masked = cv.bitwise_and(image_check, image_mask)
-    
-    # 计算水平投影值
-    total = 0 
-    hor_val = []
-    for h in range(0,image_mask.shape[0]):
-        for w in range(0,image_mask.shape[1]):
-            total = total + int(image_mask[h,w])
-        hor_val.append(total/image_mask.shape[1])
-        total = 0 
-    
-    # 绘制投影图
-    
-    # 分析投影数据，找出切割道边界
-
-    sorted_array = [x for x in hor_val if 0 < x < 200]
-    if len(sorted_array) > 0:
-        outlier = np.mean(sorted_array)
-        sorted_array = [x for x in sorted_array if x < outlier]
-        if len(sorted_array) > 0:
-            lowest_degree = int(np.mean(sorted_array))
-        else:
-            lowest_degree = 40
-    else:
-        lowest_degree = 40
-        
-    if lowest_degree < 40:
-        lowest_degree = 40
-        
-    Cutting_Path_Edges = []
-    
-    # 从中间向上查找上边界
-    mid_ignore = check_roi[2]
-    if mid_ignore<10:
-        mid_ignore = 10
-    for i in range(int(len(hor_val)/2), 5, -1):
-        if i > int(len(hor_val)/2)-mid_ignore and i < int(len(hor_val)/2)+mid_ignore:
-            continue
-        if i < len(hor_val):
-            current_value = int(hor_val[i])
-            if current_value >= lowest_degree:
-                Cutting_Path_Edges.append(i + 2)
-                break
-                
-    # 从中间向下查找下边界
-    for i in range(int(len(hor_val)/2)+5, len(hor_val) - 5):
-        if i > int(len(hor_val)/2)-mid_ignore and i < int(len(hor_val)/2)+mid_ignore:
-            continue
-
-        if i < len(hor_val):
-            current_value = int(hor_val[i])
-            if current_value >= lowest_degree:
-                Cutting_Path_Edges.append(i - 2)
-                break
-                
-    # 检查是否成功找到两个边界
-    try:
-        Cutting_Path_Top, Cutting_Path_Bot = Cutting_Path_Edges
-    except:
-        Img_Color = Img.copy()
-        if len(Img_Color.shape) == 2:
-            Img_Color = cv.cvtColor(Img_Color, cv.COLOR_GRAY2BGR)
-        return 1, "无法定位反射切割道", Img_Color, Cutting_Path_Parameters
-    # 边界顺序保护
-    if Cutting_Path_Top >= Cutting_Path_Bot:
-        Img_Color = Img.copy()
-        if len(Img_Color.shape) == 2:
-            Img_Color = cv.cvtColor(Img_Color, cv.COLOR_GRAY2BGR)
-        return 1, "切割道边界异常", Img_Color, Cutting_Path_Parameters
-
-    # 计算切割道相关参数
-    Cutting_Path_Center = int((Cutting_Path_Bot - Cutting_Path_Top) / 2) + Cutting_Path_Top
-    Cutting_Path_Center_Shift = Cutting_Path_Center - check_roi[1]  # 相对于中心的偏移
-    Cutting_Path_Width = Cutting_Path_Bot - Cutting_Path_Top
-    
-    # 完整的缺陷检测逻辑
-    # 修改：根据实际切割道边缘进行自适应崩边检测
-    up_detection_range = min(30, Cutting_Path_Top)
-    down_detection_range = min(30, image_check.shape[0] - Cutting_Path_Bot)
-    
-    if up_detection_range >= 6 and down_detection_range >= 6:# 确保有检测区域
-        # 提取上下裂纹区域
-
-            
-        # 修改：使用实际可用范围进行裂纹检测
-        Up_Crack_ori = image_check[Cutting_Path_Top- up_detection_range + 3:Cutting_Path_Top+3, 0:image_check.shape[1]]
-        Up_Crack = image_check[Cutting_Path_Top- up_detection_range + 3:Cutting_Path_Top+3, 0:image_check.shape[1]]
-        Down_Crack_ori = image_check[Cutting_Path_Bot-3:Cutting_Path_Bot + down_detection_range - 3, 0:image_check.shape[1]]
-        Down_Crack = image_check[Cutting_Path_Bot-3:Cutting_Path_Bot + down_detection_range - 3, 0:image_check.shape[1]]
-        crack_mean = (cv.mean(Up_Crack)[0]+cv.mean(Down_Crack)[0])/2
-        ret, Up_Crack_Thresh = cv.threshold(Up_Crack, crack_mean*0.5,255, cv.THRESH_BINARY_INV)
-        ret, Down_Crack_Thresh = cv.threshold(Down_Crack, crack_mean*0.5, 255, cv.THRESH_BINARY_INV)
-    
-        # 添加边界线以避免边缘干扰
-        #cv.line(Up_Crack_Thresh, (0, Up_Crack.shape[0]-1), (Up_Crack.shape[1], Up_Crack.shape[0]-1), 0, 1, cv.LINE_8)
-        if Up_Crack_Thresh.shape[0] >= 4:
-            cv.line(Up_Crack_Thresh, (0, Up_Crack.shape[0]-3), (Up_Crack.shape[1], Up_Crack.shape[0]-3), 255, 2, cv.LINE_8)
-        #cv.line(Down_Crack_Thresh, (0, 1), (Down_Crack.shape[1], 1), 0, 1, cv.LINE_8)
-        if Down_Crack_Thresh.shape[0] >= 4:
-            cv.line(Down_Crack_Thresh, (0, 3), (Down_Crack.shape[1], 3), 255, 2, cv.LINE_8) 
-        # 重新进行阈值处理以获得更清晰的结果
-
-        # 检测横向裂纹并排除干扰
-        Left_Edge, Right_Edge, Crack_Img = Cross_Detection(Up_Crack_Thresh, Down_Crack_Thresh)
-        if Left_Edge is not None and Right_Edge is not None:
-            cv.rectangle(Up_Crack_Thresh, (Left_Edge, 0), (Right_Edge, max(0, up_detection_range - 3)), 0, -1, cv.LINE_8)
-            cv.rectangle(Down_Crack_Thresh, (Left_Edge, 3), (Right_Edge, down_detection_range), 0, -1, cv.LINE_8)
-
-        # 查找最大轮廓
-        try:
-            Up_Crack_Contours, Up_Crack_Index = Largest_contour(Up_Crack_Thresh,"up")
-            Down_Crack_Contours, Down_Crack_Index = Largest_contour(Down_Crack_Thresh,"down")
-        except Exception:
-            Up_Crack_Contours, Down_Crack_Contours = [], []
-            Up_Crack_Index, Down_Crack_Index = 0, 0
-        
-        # 转换为彩色图像以便绘制
-        Up_Crack_Color = cv.cvtColor(Up_Crack_ori, cv.COLOR_GRAY2BGR)
-        Down_Crack_Color = cv.cvtColor(Down_Crack_ori, cv.COLOR_GRAY2BGR)
-
-        # 获取边界框
-        if len(Up_Crack_Contours) == 0 or len(Down_Crack_Contours) == 0:
-            Up_rect = (0,0,0,0)
-            Down_rect = (0,0,0,0)
-        else:
-            Up_rect = cv.boundingRect(Up_Crack_Contours[Up_Crack_Index])
-            Down_rect = cv.boundingRect(Down_Crack_Contours[Down_Crack_Index])
-
-        # 绘制轮廓
-        if len(Up_Crack_Contours) > 0:
-            cv.drawContours(Up_Crack_Color, Up_Crack_Contours, Up_Crack_Index, (0, 255, 0), 2, cv.LINE_8)
-        if len(Down_Crack_Contours) > 0:
-            cv.drawContours(Down_Crack_Color, Down_Crack_Contours, Down_Crack_Index, (0, 255, 0), 2, cv.LINE_8)
-        cv.line(Up_Crack_Color, (0, Up_Crack.shape[0]-1), (Up_Crack.shape[1], Up_Crack.shape[0]-1), 0, 1, cv.LINE_8)
-        cv.line(Down_Crack_Color, (0, 1), (Down_Crack.shape[1], 1), 0, 2, cv.LINE_8)
-        # 添加边界线
-
-
-        # 将处理后的裂纹区域放回原图
-        image_check_result = image_check.copy()
-        if len(image_check_result.shape) == 2:
-            image_check_result = cv.cvtColor(image_check_result, cv.COLOR_GRAY2BGR)
-        image_check_result[Cutting_Path_Top- up_detection_range + 3:Cutting_Path_Top+3, 0:image_check.shape[1]] = Up_Crack_Color     
-        image_check_result[Cutting_Path_Bot-3:Cutting_Path_Bot + down_detection_range - 3, 0:image_check.shape[1]] = Down_Crack_Color
-        
-        # 计算裂纹参数
-        Up_Crack_Max = Up_rect[3]
-        Down_Crack_Max = Down_rect[3]
-        
-        # 确定最大裂纹和相关参数
-        if Up_Crack_Max >= Down_Crack_Max:
-            Center_to_MaxDefect = Cutting_Path_Center - Cutting_Path_Top + Up_Crack_Max
-            Crack_Max = Up_Crack_Max-8
-        else:
-            Center_to_MaxDefect = Cutting_Path_Bot - Cutting_Path_Center + Down_Crack_Max
-            Crack_Max = Down_Crack_Max-8
-        if Crack_Max < 0:
-            Crack_Max = 0
-        # 计算裂纹总面积
-        if len(Up_Crack_Contours) > 0 and len(Down_Crack_Contours) > 0:
-            Crack_Area = int((cv.contourArea(Up_Crack_Contours[Up_Crack_Index]) + 
-                         cv.contourArea(Down_Crack_Contours[Down_Crack_Index])) / 10)
-        else:
-            Crack_Area = 0
-    else:
-        Up_Crack_Max = 0
-        Down_Crack_Max = 0
-        Crack_Max = 0
-        Crack_Area = 0
-        Center_to_MaxDefect = 0
-    
-    # 在原图上绘制检测结果
-    Img_Result = Img.copy()
-    if len(Img_Result.shape) == 2:
-        Img_Result = cv.cvtColor(Img_Result, cv.COLOR_GRAY2BGR)
-
-    
-    # 如果有缺陷检测结果，则叠加显示
-    if 'image_check_result' in locals():
-        Img_Result[image_center[1]-check_roi[1]:image_center[1]+check_roi[1], 
-                  image_center[0]-check_roi[0]:image_center[0]+check_roi[0]] = image_check_result
-    
-    cv.line(Img_Result, (image_center[0]-check_roi[0], image_center[1]-check_roi[1]+Cutting_Path_Top), 
-            (image_center[0]+check_roi[0], image_center[1]-check_roi[1]+Cutting_Path_Top), (0,0,255), 2, cv.LINE_8)
-    cv.line(Img_Result, (image_center[0]-check_roi[0], image_center[1]-check_roi[1]+Cutting_Path_Bot), 
-            (image_center[0]+check_roi[0], image_center[1]-check_roi[1]+Cutting_Path_Bot), (0,0,255), 2, cv.LINE_8)
-    cv.rectangle(Img_Result, (image_center[0]-check_roi[0], image_center[1]-check_roi[1]), 
-            (image_center[0]+check_roi[0], image_center[1]+check_roi[1]), (255,0,255), 2, cv.LINE_8)
-    # 计算总宽度（包括缺陷）
-    Cutting_Path_Width_Total = Cutting_Path_Width + Up_Crack_Max + Down_Crack_Max
-    
-    if Cutting_Path_Width <= 10:
-        return 2, "检测反射切割道过窄", Img_Result, Cutting_Path_Parameters
-        
-    # 组装返回参数
-    Cutting_Path_Parameters = [Cutting_Path_Center_Shift, Cutting_Path_Width, Cutting_Path_Width_Total, 
-                              Center_to_MaxDefect, Crack_Max, Crack_Area]
-    print("Reflection Detecting OUT")
-    
-    return 0, "反射切痕检查完成", Img_Result, Cutting_Path_Parameters
-
-def auto_focal(image: np.ndarray) -> int:
+def auto_focal(image):
     scharr_x = cv.Sobel(image,cv.CV_64F,1,0,ksize=-1)
     scharr_y = cv.Sobel(image,cv.CV_64F,0,1,ksize=-1)
     scharr_x = cv.convertScaleAbs(scharr_x)    
@@ -1388,7 +846,8 @@ def auto_focal(image: np.ndarray) -> int:
 
     return image_clarity
 
-def best_template(image: np.ndarray) -> np.ndarray:
+
+def best_template(image):
     image = cv.cvtColor(image,cv.COLOR_BGR2GRAY)
     image_width_gap = int(len(image[0])/3)-1
     image_hight_gap = int(len(image)/3)-1 
@@ -1403,7 +862,8 @@ def best_template(image: np.ndarray) -> np.ndarray:
     loc = result.index(np.max(result))
     return image_sub_list[loc]
 
-def image_preprocess(image: cv.typing.MatLike, image_angle_list: List[float], current_cam: int) -> np.ndarray:
+
+def image_preprocess(image:cv.typing.MatLike,image_angle_list,current_cam:int):
     ## 预处理
     iamge_hight = image.shape[0]
     image_width = image.shape[1]
