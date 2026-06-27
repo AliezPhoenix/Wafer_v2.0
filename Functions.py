@@ -877,20 +877,39 @@ def template_match(image: np.ndarray, template: np.ndarray, template_standard: f
     if max_val < template_standard:
         return 2, "无目标图像: Q值未达到设定值", [0, 0, max_val, 0]
 
+    # Step1: 先按相似度收集候选点
+    loc = np.where(match_result >= template_standard)
+    candidates = []
+    for y, x in zip(*loc):
+        q = float(match_result[y, x])
+        cx = x + int(template_width / 2)
+        cy = y + int(template_hight / 2)
+        candidates.append((cx, cy, q))
+
+    # Step2: 按相似度降序去重，去重距离取模板尺寸的一半
+    dedup_distance = min(template_width, template_hight) / 2.0
+    dedup_distance_sq = dedup_distance * dedup_distance
+    candidates.sort(key=lambda item: item[2], reverse=True)
+    dedup_candidates = []
+    for cx, cy, q in candidates:
+        duplicated = False
+        for kept_x, kept_y, _ in dedup_candidates:
+            if (cx - kept_x) ** 2 + (cy - kept_y) ** 2 <= dedup_distance_sq:
+                duplicated = True
+                break
+        if not duplicated:
+            dedup_candidates.append((cx, cy, q))
+
+    # Step3: 在去重后的候选点中，选择最靠近图像中心的点
     best_point = None
     best_q = 0.0
     min_distance = float('inf')
-    loc = np.where(match_result >= template_standard)
-
-    for y, x in zip(*loc):
-        q = match_result[y, x]
-        cx = x + int(template_width / 2)
-        cy = y + int(template_hight / 2)
+    for cx, cy, q in dedup_candidates:
         distance = np.sqrt((cx - img_center[0])**2 + (cy - img_center[1])**2)
         if distance < min_distance:
             min_distance = distance
             best_point = (cx, cy)
-            best_q = float(q)
+            best_q = q
 
     if best_point is None:
         return 1, "无目标图像", [0, 0, 0, 0]
