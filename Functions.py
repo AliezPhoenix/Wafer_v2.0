@@ -10,6 +10,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from typing import List, Tuple, Union, Optional
+import os
 
 # 弧度到度数的转换常量
 R2D = 180.0 / math.pi
@@ -457,66 +458,79 @@ def Passcode_Check(input: str) -> bool:
     else:
         return False
 
-def conn_ftp() -> Tuple[int, FTP]:
+def conn_ftp(timeout: float = 2.0) -> Tuple[int, FTP]:
+    """Connect FTP with a short timeout so PLC heartbeat is not starved in the same thread."""
     ftp_ip = "192.168.1.5"
     ftp_port = 21
     ftp_user = "Qrobot"
-    ftp_pw = "Qrobot123"                
+    ftp_pw = "Qrobot123"
 
     ftp = FTP()
     try:
-        # 设置连接超时和传输超时
-        ftp.connect(ftp_ip, ftp_port, timeout=10)
+        # Keep timeout short: FTP shares the PLC work thread.
+        ftp.connect(ftp_ip, ftp_port, timeout=timeout)
         ftp.login(ftp_user, ftp_pw)
-        ftp.set_pasv(True)  # 使用被动模式
+        ftp.set_pasv(True)
+        ftp.sock.settimeout(timeout)
         print(ftp.getwelcome())
         return 1, ftp
     except Exception as e:
         print(f"FTP连接失败: {e}")
         try:
-            ftp.quit()
-        except:
+            ftp.close()
+        except Exception:
             pass
         return 0, ftp
 
-def download_file(ftp: FTP, remotepath: str, local_path: str, filename: str) -> str:
+def download_file(
+    ftp: FTP,
+    remotepath: str,
+    local_path: str,
+    filename: str,
+    on_retry=None,
+    max_retries: int = 2,
+) -> str:
+    """
+    Download a file over FTP.
+    on_retry: optional callable invoked between retries (e.g. PLC heartbeat pulse).
+    """
     bufsize = 2048
-    max_retries = 3
     retry_count = 0
-    
+    local_file = os.path.join(local_path, filename)
+    os.makedirs(local_path, exist_ok=True)
+
     while retry_count < max_retries:
         try:
-            # 检查连接是否仍然有效
             ftp.voidcmd("NOOP")
-            
             ftp.cwd(remotepath)
-            local_path = local_path + "/" + filename
-            
-            with open(local_path, 'wb') as fp:
+            with open(local_file, 'wb') as fp:
                 ftp.retrbinary('RETR ' + filename, fp.write, bufsize)
-            
-            ftp.cwd("..")
+            try:
+                ftp.cwd("..")
+            except Exception:
+                pass
             return "OK"
-            
         except Exception as e:
             retry_count += 1
             print(f"FTP下载失败 (尝试 {retry_count}/{max_retries}): {e}")
-            
-            if retry_count < max_retries:
+            if on_retry is not None:
                 try:
-                    # 尝试重新连接
-                    ftp.quit()
-                except:
-                    pass
-                
-                # 重新建立连接
-                ret, ftp = conn_ftp()
-                if ret == 0:
-                    print("无法重新建立FTP连接")
-                    return "NG"
-            else:
+                    on_retry()
+                except Exception as hb_err:
+                    print(f"FTP重试心跳回调失败: {hb_err}")
+            if retry_count >= max_retries:
                 return "NG"
-    
+            try:
+                ftp.quit()
+            except Exception:
+                try:
+                    ftp.close()
+                except Exception:
+                    pass
+            ret, ftp = conn_ftp()
+            if ret == 0:
+                print("无法重新建立FTP连接")
+                return "NG"
     return "NG"
 
 def remove_duplicates(points: List[Tuple[int, int]], min_distance: int = 30)->Tuple[int, str, List[Tuple[int, int]]]:

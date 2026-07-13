@@ -310,16 +310,16 @@ class Communicate():
                 print(f"Socket通信失败 (尝试 {retry_count}/{max_retries}): {e}")
                 
                 if retry_count < max_retries:
-                    # 尝试重新连接
+                    # 尝试重新连接（connect 返回 0 表示成功）
                     try:
                         self.Sender.close()
-                    except:
+                    except Exception:
                         pass
                     
                     self.Sender = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    self.Sender.settimeout(5)  # 增加超时时间
+                    self.Sender.settimeout(5)
                     
-                    if self.connect() == 0:
+                    if self.connect() != 0:
                         print("无法重新建立Socket连接")
                         return 1, None
                 else:
@@ -344,16 +344,16 @@ class Communicate():
                 print(f"Socket发送失败 (尝试 {retry_count}/{max_retries}): {e}")
                 
                 if retry_count < max_retries:
-                    # 尝试重新连接
+                    # 尝试重新连接（connect 返回 0 表示成功）
                     try:
                         self.Sender.close()
-                    except:
+                    except Exception:
                         pass
                     
                     self.Sender = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    self.Sender.settimeout(5)  # 增加超时时间
+                    self.Sender.settimeout(5)
                     
-                    if self.connect() == 0:
+                    if self.connect() != 0:
                         print("无法重新建立Socket连接")
                         return 1
                 else:

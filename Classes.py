@@ -118,6 +118,18 @@ class WorkThread(QThread):
             return self.Camhigh2.Get_image(),pixel_size_high
         if current_cam == 3:
             return self.Camlow2.Get_image(),pixel_size_low
+
+    def pulse_plc_heartbeat(self):
+        """在同线程阻塞操作（如 FTP）间隙回写 DT1200，避免 PLC 心跳超时。"""
+        try:
+            ret, signals = self.COM.get_signals("DT1000", "DT1200")
+            if ret != 0 or signals is None:
+                return
+            self.Signals = signals
+            self.Signals_Send.signal_refresh(self.Signals)
+            self.COM.send_signals(self.Signals_Send, "DT1200", "DT1400")
+        except Exception as e:
+            print("PLC心跳穿插失败: {}".format(e))
     
     def actions(self,action:str):
         if self.Signals is None:
@@ -162,33 +174,63 @@ class WorkThread(QThread):
         image_center            = [int(image_width/2),int(image_hight/2)]
         pixel_size              = self.pixel_size
         log = self.logger
-        #读取切割信息
+        #读取切割信息（与 PLC 同线程：短超时 + 重试间心跳，失败回退本地缓存，不退出线程）
         if action == "Read_Map":
-            ftp_client:FTP
             self.map_data = []
             self.read_map_ret = 0
-            ftp_ret,ftp_client = conn_ftp() 
+            local_csv = os.path.join("Data_FTP", "CutLineMap.CSV")
+            ftp_ok = False
+            ftp_client = None
             try:
-                ret = download_file(ftp_client,"/FTP","Data_FTP",'CutLineMap.CSV')
-            except:             
-                ftp_client = conn_ftp()
-                ret = download_file(ftp_client,"/FTP","Data_FTP",'CutLineMap.CSV')
-            if ret == "NG" or ftp_ret == 0:
-                log.error("CutLineMap.CSV 读取失败")
-                self.read_map_ret = 1
-            with open('./Data_FTP/CutLineMap.CSV',encoding = 'utf-8-sig') as f:
-                for row in csv.reader(f,skipinitialspace = True):
+                self.pulse_plc_heartbeat()
+                ftp_ret, ftp_client = conn_ftp()
+                if ftp_ret == 1:
+                    ret = download_file(
+                        ftp_client, "/FTP", "Data_FTP", "CutLineMap.CSV",
+                        on_retry=self.pulse_plc_heartbeat,
+                    )
+                    ftp_ok = (ret == "OK")
+                else:
+                    log.error("FTP连接失败，尝试本地缓存 CutLineMap.CSV")
+                    self.pulse_plc_heartbeat()
+            except Exception as e:
+                log.error("CutLineMap.CSV FTP异常: {}".format(e))
+                self.pulse_plc_heartbeat()
+            finally:
+                if ftp_client is not None:
                     try:
-                        if int(row[0]) == int(row[1]) == 0:
+                        ftp_client.quit()
+                    except Exception:
+                        try:
+                            ftp_client.close()
+                        except Exception:
+                            pass
+
+            if not ftp_ok:
+                if os.path.exists(local_csv):
+                    log.warning("FTP失败，使用本地缓存: {}".format(local_csv))
+                else:
+                    log.error("CutLineMap.CSV FTP失败且本地文件不存在")
+                    self.read_map_ret = 1
+
+            if os.path.exists(local_csv):
+                with open(local_csv, encoding='utf-8-sig') as f:
+                    for row in csv.reader(f, skipinitialspace=True):
+                        try:
+                            if int(row[0]) == int(row[1]) == 0:
+                                continue
+                            else:
+                                for i in (0, len(row) - 1):
+                                    row[i] = int(row[i])
+                                self.map_data.append(row)
+                        except Exception as e:
+                            print("CutLineMap.CSV Error Code: ", e)
                             continue
-                        else:
-                            for i in (0,len(row)-1):
-                                row[i] = int(row[i])
-                            self.map_data.append(row)
-                    except Exception as e:
-                        print("CutLineMap.CSV Error Code: ",e)
-                        continue
-            
+                self.read_map_ret = 0
+            else:
+                self.map_data = []
+                
+
         #文件操作
         if action[0:4] == "File" or action[0:6] == "Source":
             ori_source          = "Data_M\\" + signals_current.decode("DT1050","DT1066","file")
@@ -767,10 +809,10 @@ class WorkThread(QThread):
             start_time = time.time()
             self.connection_ret , self.Signals = self.COM.get_signals("DT1000","DT1200")
             self.image,self.pixel_size= self.get_image()
-            # 统一退出检查逻辑：连接失败、读取地图失败或图像获取失败
-            if (self.connection_ret == 1) or (self.read_map_ret == 1) or (self.image is None):
-                log.error("线程断开退出: connection_ret={}, read_map_ret={}, image={}".format(
-                    self.connection_ret, self.read_map_ret, "None" if self.image is None else "OK"))
+            # 统一退出检查：仅 COM/图像失败退出；地图 FTP 失败已回退本地缓存，不因此退出
+            if (self.connection_ret == 1) or (self.image is None):
+                log.error("线程断开退出: connection_ret={}, image={}".format(
+                    self.connection_ret, "None" if self.image is None else "OK"))
                 self._shut_down_signal.emit(True)
                 break 
             heart_beat = self.Signals.decode("DT1000","DT1000","int")
@@ -874,10 +916,9 @@ class WorkThread(QThread):
                     self.Signals_Send.motify_encode("DT1219",0,"int")
             self.Signals_Send.signal_refresh(self.Signals)   
             self.connection_ret = self.COM.send_signals(self.Signals_Send,"DT1200","DT1400")
-            # 统一退出检查逻辑：与循环开始处的检查保持一致
-            if self.connection_ret == 1 or self.read_map_ret == 1:
-                log.error("线程断开退出: connection_ret={}, read_map_ret={}".format(
-                    self.connection_ret, self.read_map_ret))
+            # 统一退出检查：地图读取失败不再退出（已用本地缓存回退）
+            if self.connection_ret == 1:
+                log.error("线程断开退出: connection_ret={}".format(self.connection_ret))
                 self._shut_down_signal.emit(True)   
                 break 
             self.display_image(False,False,[0,0,0])
