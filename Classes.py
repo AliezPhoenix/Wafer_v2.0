@@ -503,17 +503,17 @@ class WorkThread(QThread):
                             str(result[5])]
             
             color_list = [(0,255,0),(0,255,0),(0,255,0),(0,255,0),(0,255,0),(0,255,0)]
-            if result[0] > cut_path_shift_std:
+            if result[0] > cut_path_shift_std and cut_path_shift_std != 0:
                 color_list[0] = (0,0,255)
-            if result[1]>cut_path_widthMax_std or result[1]<cut_path_widthMin_std:
+            if (result[1]>cut_path_widthMax_std or result[1]<cut_path_widthMin_std) and cut_path_widthMax_std != 0 and cut_path_widthMin_std != 0:
                 color_list[1] = (0,0,255)
-            if result[2]>cut_path_Twidth_std:
+            if result[2]>cut_path_Twidth_std and cut_path_Twidth_std != 0:
                 color_list[2] = (0,0,255)
-            if result[3]>cut_path_half_w_std:
+            if result[3]>cut_path_half_w_std and cut_path_half_w_std != 0:
                 color_list[3] = (0,0,255)
-            if result[4]>cut_path_chip_max_std:
+            if result[4]>cut_path_chip_max_std and cut_path_chip_max_std != 0:
                 color_list[4] = (0,0,255)
-            if result[5]>cut_path_c_area_std:
+            if result[5]>cut_path_c_area_std and cut_path_c_area_std != 0:
                 color_list[5] = (0,0,255)
 
             #image[image_center[1]-cutting_path_roi_hight:image_center[1]+cutting_path_roi_hight,image_center[0]-cutting_path_roi_width:image_center[0]+cutting_path_roi_width] = result_image
