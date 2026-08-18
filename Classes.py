@@ -459,7 +459,30 @@ class WorkThread(QThread):
         
         #切痕检查
         if action == "Cutting_Path_Detection":
-            log.info("开始切痕检查")            
+            log.info("开始切痕检查")
+            cutting_sensitive_level = self.Signals.decode("DT1039","DT1039","int")
+            current_explosure_time = None
+            exposure_cam = None
+            if cutting_sensitive_level != 0:
+                explosure_time = cutting_sensitive_level*13500
+                if current_cam == 1:
+                    exposure_cam = self.Camhigh
+                elif current_cam == 2:
+                    exposure_cam = self.Camhigh2
+                else:
+                    log.error("切痕检查: 灵敏度非0时仅支持高倍相机(current_cam=1/2), 当前为 {}".format(current_cam))
+                    return
+                ret, ret_content, grabbed, current_explosure_time = capture_with_temp_exposure(
+                    exposure_cam, explosure_time, discard_frames=2)
+                if ret != 0:
+                    log.error("切痕检查: 切痕曝光时间设置或取图失败: "+str(ret_content))
+                    if current_explosure_time is not None:
+                        restore_ret, restore_msg = restore_exposure(exposure_cam, current_explosure_time)
+                        if restore_ret != 0:
+                            log.error("切痕检查: 切痕曝光时间恢复失败: "+str(restore_msg))
+                    return
+                image = grabbed
+                log.info("切痕检查: 切痕曝光时间设置成功: "+str(explosure_time))
             cutting_path_roi_width =int((10-cutting_path_roi_width)*(image_width/20))
             cutting_path_roi_hight = int(cutting_path_roi_hight/2)
             
@@ -530,6 +553,13 @@ class WorkThread(QThread):
             self.Signals_Send.motify_encode("DT1234",result[3],"int")
             self.Signals_Send.motify_encode("DT1235",result[4],"int")
             self.Signals_Send.motify_encode("DT1236",result[5],"int")
+            
+            if exposure_cam is not None and current_explosure_time is not None:
+                ret,ret_content = restore_exposure(exposure_cam, current_explosure_time)
+                if ret != 0:
+                    log.error("切痕检查: 切痕曝光时间恢复失败: "+str(ret_content))
+                else:
+                    log.info("切痕检查: 切痕曝光时间恢复成功: "+str(current_explosure_time))
             pass
        
         #单张显示

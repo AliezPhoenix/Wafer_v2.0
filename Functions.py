@@ -1192,6 +1192,12 @@ def cutting_path_reflection(Img: np.ndarray, roi: List[int], method: str = "std"
     # 灰度保护
     if len(image.shape) == 3 and image.shape[2] == 3:
         image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    # 切痕检查前：整幅灰度平均亮度过低则直接返回全0，不画线框
+    if float(np.mean(image)) < 20:
+        Img_Result = Img.copy()
+        if len(Img_Result.shape) == 2:
+            Img_Result = cv.cvtColor(Img_Result, cv.COLOR_GRAY2BGR)
+        return 0, "整体亮度过低", Img_Result, Cutting_Path_Parameters
     image_width = image.shape[1]
     image_hight = image.shape[0]
     image_center = [int(image_width/2),int(image_hight/2)]
@@ -1453,14 +1459,37 @@ def image_preprocess(image: cv.typing.MatLike, image_angle_list: List[float], cu
     image = image[20:image.shape[0]-20,20:image.shape[1]-20]
     image = cv.cvtColor(image,cv.COLOR_GRAY2BGR)
     return image
-        
-        
 
 
+def capture_with_temp_exposure(cam, exposure_time, discard_frames=2):
+    """Set exposure, discard buffered frames, then grab one image.
+
+    Returns (ret, message, image, original_exposure).
+    original_exposure is filled after a successful Get_parameter so callers can restore.
+    """
+    if cam is None:
+        return 1, "camera is None", None, None
+    get_result = cam.Get_parameter("ExposureTime")
+    if not isinstance(get_result, tuple) or len(get_result) < 3:
+        return 1, "invalid Get_parameter return", None, None
+    ret_get, msg_get, original_exposure = get_result[0], get_result[1], get_result[2]
+    if ret_get != 0:
+        return ret_get, msg_get, None, None
+    ret_set, msg_set = cam.Set_parameter(exposure_time, "ExposureTime")
+    if ret_set != 0:
+        return ret_set, msg_set, None, original_exposure
+    image = None
+    grabs = max(int(discard_frames), 0) + 1
+    for _ in range(grabs):
+        image = cam.Get_image()
+    if image is None:
+        return 1, "get image failed", None, original_exposure
+    return 0, "Success", image, original_exposure
 
 
-
-
-
-
-
+def restore_exposure(cam, original_exposure):
+    if cam is None:
+        return 1, "camera is None"
+    if original_exposure is None:
+        return 1, "original exposure is None"
+    return cam.Set_parameter(original_exposure, "ExposureTime")

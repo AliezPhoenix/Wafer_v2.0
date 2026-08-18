@@ -144,38 +144,20 @@ class CameraController():
                     print('show error','set triggersoftware fail! ret = '+self.To_hex_str(ret))
 
     def Get_parameter(self,parameter_type = None):
-        ret = 0
         st_float_param = MVCC_FLOATVALUE()
         memset(byref(st_float_param), 0, sizeof(MVCC_FLOATVALUE))
-        if parameter_type is None: 
-            return 1, "Please Enter a Parameter Type"
+        if parameter_type is None:
+            return 1, "Please Enter a Parameter Type", None
         if self.b_open_device == False:
-            return 1, "Please Open Device First"
-        
-        if parameter_type == "ExposureTime":
-            ret = self.obj_cam.MV_CC_GetFloatValue("ExposureTime", st_float_param)
-            if ret != 0:
-                return ret,'show error','get exposure time fail! ret = '+self.To_hex_str(ret), st_float_param.fCurValue
-            else:
-                return ret, 'get exposure time success', 'ExposureTime = '+ st_float_param.fCurValue
-        elif parameter_type == "Gain":
-            ret = self.obj_cam.MV_CC_GetFloatValue("Gain", st_float_param)
-            if ret != 0:
-                return ret,'show error','get gain fail! ret = '+self.To_hex_str(ret), st_float_param.fCurValue
-            else:
-                return ret, 'get gain success', 'Gain = '+ st_float_param.fCurValue
-        elif parameter_type == "Gamma":
-            ret = self.obj_cam.MV_CC_GetFloatValue("Gamma", st_float_param)
-            if ret != 0:
-                return ret,'show error','get gamma fail! ret = '+self.To_hex_str(ret), st_float_param.fCurValue
-            else:
-                return ret, 'get gamma success', 'Gamma = '+ st_float_param.fCurValue
-        elif parameter_type == "AcquisitionFrameRate":
-            ret = self.obj_cam.MV_CC_GetFloatValue("AcquisitionFrameRate", st_float_param)
-            if ret != 0:
-                return ret,'show error','get AcquisitionFrameRate fail! ret = '+self.To_hex_str(ret), st_float_param.fCurValue
-            else:
-                return ret, 'get AcquisitionFrameRate success', 'AcquisitionFrameRate = '+ st_float_param.fCurValue
+            return 1, "Please Open Device First", None
+
+        float_params = ("ExposureTime", "Gain", "Gamma", "AcquisitionFrameRate")
+        if parameter_type not in float_params:
+            return 1, "Unknown parameter type", None
+        ret = self.obj_cam.MV_CC_GetFloatValue(parameter_type, st_float_param)
+        if ret != 0:
+            return ret, "get {} fail! ret = {}".format(parameter_type, self.To_hex_str(ret)), None
+        return ret, "get {} success".format(parameter_type), st_float_param.fCurValue
 
         # if True == self.b_open_device:
         #     stFloatParam_FrameRate =  MVCC_FLOATVALUE()
@@ -207,21 +189,17 @@ class CameraController():
         else:
             if parameter_type == 'AcquisitionFrameRate':
                 ret = self.obj_cam.MV_CC_SetFloatValue("AcquisitionFrameRate", value)
-                if ret != 0:
-                    print('show error','set parameter fail! ret = '+self.To_hex_str(ret))
-            if parameter_type == 'ExposureTime':
+            elif parameter_type == 'ExposureTime':
                 ret = self.obj_cam.MV_CC_SetFloatValue("ExposureTime",float(value))
-                if ret != 0:
-                    print('show error','set exposure time fail! ret = '+self.To_hex_str(ret))
-            if parameter_type == 'Gain':
+            elif parameter_type == 'Gain':
                 ret = self.obj_cam.MV_CC_SetFloatValue("Gain",float(value))
-                if ret != 0:
-                    print('show error','set gain fail! ret = '+self.To_hex_str(ret))
-            if parameter_type == "Gamma":
+            elif parameter_type == "Gamma":
                 ret = self.obj_cam.MV_CC_SetFloatValue("Gamma",float(value))
-                if ret != 0:
-                    print('show error','set gamma fail! ret = '+self.To_hex_str(ret))
-        return ret,"Success"
+            else:
+                return 1, "Unknown parameter type"
+            if ret != 0:
+                return ret, "set {} fail! ret = {}".format(parameter_type, self.To_hex_str(ret))
+        return ret, "Success"
 
     # def Work_thread(self):
     def Get_image(self):
