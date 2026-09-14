@@ -162,6 +162,7 @@ def Animation_Y_POS(img_size: Tuple[int, int], y_pos: List[List], current_path_s
     kerf_loc = []
     corr_loc = []
     rect_pos = []
+    mask_layer = np.zeros((Img_Hight,Img_Width,3),np.uint8)
     for i in range(0,len(y_pos)):
         if i == selected_path:
             linesize = 2
@@ -197,14 +198,22 @@ def Animation_Y_POS(img_size: Tuple[int, int], y_pos: List[List], current_path_s
             if if_cut == 1:
                 cv.line(Img,(0,Y_Loc),(current_x,Y_Loc),pink,linesize,cv.LINE_8)                
         elif staus == 1 or y_pos[i][1] == 5:
+            cv.line(mask_layer,(0,Y_Loc),(Img_Width,Y_Loc),blue,5,cv.LINE_8)
             cv.line(Img,(0,Y_Loc),(Img_Width,Y_Loc),blue,linesize,cv.LINE_8)
         elif staus == 2 or staus == 3 or y_pos[i][1] == 6:
+            cv.line(mask_layer,(0,Y_Loc),(Img_Width,Y_Loc),yellow,5,cv.LINE_8)
             cv.line(Img,(0,Y_Loc),(Img_Width,Y_Loc),yellow,linesize,cv.LINE_8)
         else:
             cv.line(Img,(0,Y_Loc),(Img_Width,Y_Loc),white,linesize,cv.LINE_8)
         if zoom_size !=1:
             cv.line(Img,(X_Loc,0),(X_Loc,Img_Hight),white,1,cv.LINE_8)
             cv.line(Img,(500,0),(500,Img_Hight),white,1,cv.LINE_8)
+    filled = mask_layer.any(axis=2)
+    if filled.any():
+        drawn = Img.copy()
+        Img[filled] = (mask_layer[filled] * 0.75).astype(np.uint8)
+        lined = drawn.any(axis=2)
+        Img[lined] = drawn[lined]
     Img_Center = (int(Img_Width/2),int(Img_Hight/2))
     if shape == "Circle":
         Img = CircleCut(Img,(500,500),int((img_size[0]/2)*Scale)+10,shape)
@@ -1193,7 +1202,7 @@ def cutting_path_reflection(Img: np.ndarray, roi: List[int], method: str = "std"
     if len(image.shape) == 3 and image.shape[2] == 3:
         image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # 切痕检查前：整幅灰度平均亮度过低则直接返回全0，不画线框
-    if float(np.mean(image)) < 20:
+    if float(np.mean(image)) < 20 or float(np.mean(image)) > 240:
         Img_Result = Img.copy()
         if len(Img_Result.shape) == 2:
             Img_Result = cv.cvtColor(Img_Result, cv.COLOR_GRAY2BGR)
@@ -1288,7 +1297,8 @@ def cutting_path_reflection(Img: np.ndarray, roi: List[int], method: str = "std"
     # 计算切割道相关参数
     Cutting_Path_Center = int((Cutting_Path_Bot - Cutting_Path_Top) / 2) + Cutting_Path_Top
     Cutting_Path_Center_Shift = Cutting_Path_Center - check_roi[1]  # 相对于中心的偏移
-    Cutting_Path_Width = Cutting_Path_Bot - Cutting_Path_Top
+    # 边界查找时上沿 +2、下沿 -2，实测宽度少 4 像素，最终结果补回
+    Cutting_Path_Width = Cutting_Path_Bot - Cutting_Path_Top + 4
     
     # 完整的缺陷检测逻辑
     # 修改：根据实际切割道边缘进行自适应崩边检测
@@ -1461,35 +1471,45 @@ def image_preprocess(image: cv.typing.MatLike, image_angle_list: List[float], cu
     return image
 
 
-def capture_with_temp_exposure(cam, exposure_time, discard_frames=2):
-    """Set exposure, discard buffered frames, then grab one image.
-
-    Returns (ret, message, image, original_exposure).
-    original_exposure is filled after a successful Get_parameter so callers can restore.
-    """
+def cam_params(cam):
     if cam is None:
-        return 1, "camera is None", None, None
-    get_result = cam.Get_parameter("ExposureTime")
-    if not isinstance(get_result, tuple) or len(get_result) < 3:
-        return 1, "invalid Get_parameter return", None, None
-    ret_get, msg_get, original_exposure = get_result[0], get_result[1], get_result[2]
-    if ret_get != 0:
-        return ret_get, msg_get, None, None
-    ret_set, msg_set = cam.Set_parameter(exposure_time, "ExposureTime")
-    if ret_set != 0:
-        return ret_set, msg_set, None, original_exposure
-    image = None
-    grabs = max(int(discard_frames), 0) + 1
-    for _ in range(grabs):
-        image = cam.Get_image()
-    if image is None:
-        return 1, "get image failed", None, original_exposure
-    return 0, "Success", image, original_exposure
+        return None
+    r = cam.Get_parameter("ExposureTime")
+    if not (isinstance(r, tuple) and len(r) >= 3 and r[0] == 0 and r[2] is not None):
+        return None
+    fps = cam.Get_parameter("AcquisitionFrameRate")
+    fps = float(fps[2]) if isinstance(fps, tuple) and len(fps) >= 3 and fps[0] == 0 and fps[2] is not None else None
+    return {"ExposureTime": float(r[2]), "AcquisitionFrameRate": fps}
 
 
-def restore_exposure(cam, original_exposure):
-    if cam is None:
-        return 1, "camera is None"
-    if original_exposure is None:
-        return 1, "original exposure is None"
-    return cam.Set_parameter(original_exposure, "ExposureTime")
+def apply_exposure(cam, spec, discard=0):
+    """spec: exposure number, or {ExposureTime, AcquisitionFrameRate} to restore default."""
+    if cam is None or spec is None:
+        return 1, "no cam/spec"
+    if isinstance(spec, dict):
+        ret, msg = cam.Set_parameter(spec["ExposureTime"], "ExposureTime")
+        if ret != 0:
+            return ret, msg
+        fps = spec.get("AcquisitionFrameRate")
+        if fps is not None:
+            cam.Set_parameter(True, "AcquisitionFrameRateEnable")
+            ret, msg = cam.Set_parameter(fps, "AcquisitionFrameRate")
+            if ret != 0:
+                return ret, msg
+    else:
+        ret, msg = cam.Set_parameter(spec, "ExposureTime")
+        if ret != 0:
+            return ret, msg
+    for _ in range(discard):
+        cam.Get_image()
+    return 0, "ok"
+
+
+def sync_high_exposure(cams, defaults, sw, last_sw, cam_id, last_id, level):
+    if sw == last_sw and cam_id == last_id:
+        return
+    if last_sw and last_id in (1, 2):
+        apply_exposure(cams.get(last_id), defaults.get(last_id))
+    if sw and cam_id in (1, 2) and level:
+        apply_exposure(cams.get(cam_id), level * 13500)
+

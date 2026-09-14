@@ -157,7 +157,7 @@ class CameraController():
         ret = self.obj_cam.MV_CC_GetFloatValue(parameter_type, st_float_param)
         if ret != 0:
             return ret, "get {} fail! ret = {}".format(parameter_type, self.To_hex_str(ret)), None
-        return ret, "get {} success".format(parameter_type), st_float_param.fCurValue
+        return ret, "get {} success".format(parameter_type), float(st_float_param.fCurValue)
 
         # if True == self.b_open_device:
         #     stFloatParam_FrameRate =  MVCC_FLOATVALUE()
@@ -187,8 +187,10 @@ class CameraController():
         if self.b_open_device == False:
             return 1, "Please Open Device First"
         else:
-            if parameter_type == 'AcquisitionFrameRate':
-                ret = self.obj_cam.MV_CC_SetFloatValue("AcquisitionFrameRate", value)
+            if parameter_type == 'AcquisitionFrameRateEnable':
+                ret = self.obj_cam.MV_CC_SetBoolValue("AcquisitionFrameRateEnable", bool(value))
+            elif parameter_type == 'AcquisitionFrameRate':
+                ret = self.obj_cam.MV_CC_SetFloatValue("AcquisitionFrameRate", float(value))
             elif parameter_type == 'ExposureTime':
                 ret = self.obj_cam.MV_CC_SetFloatValue("ExposureTime",float(value))
             elif parameter_type == 'Gain':

@@ -55,6 +55,7 @@ class WorkThread(QThread):
 
         self.connection_ret     = 0
         self.read_map_ret       = 0
+        self.default_exposure   = {1: None, 2: None}
         try:
             ##重启时关闭相机初始化
             # Stop_grabbing() 和 Close_device() 内部已有状态检查，相机未开启时会安全返回
@@ -118,6 +119,14 @@ class WorkThread(QThread):
             return self.Camhigh2.Get_image(),pixel_size_high
         if current_cam == 3:
             return self.Camlow2.Get_image(),pixel_size_low
+
+    def _high(self, cam_id):
+        return self.Camhigh if cam_id == 1 else self.Camhigh2 if cam_id == 2 else None
+
+    def _sync_exposure(self, sw, last_sw, cam_id, last_id, level):
+        sync_high_exposure(
+            {1: self.Camhigh, 2: self.Camhigh2},
+            self.default_exposure, sw, last_sw, cam_id, last_id, level)
 
     def pulse_plc_heartbeat(self):
         """在同线程阻塞操作（如 FTP）间隙回写 DT1200，避免 PLC 心跳超时。"""
@@ -461,107 +470,107 @@ class WorkThread(QThread):
         if action == "Cutting_Path_Detection":
             log.info("开始切痕检查")
             cutting_sensitive_level = self.Signals.decode("DT1039","DT1039","int")
-            current_explosure_time = None
-            exposure_cam = None
-            if cutting_sensitive_level != 0:
-                explosure_time = cutting_sensitive_level*13500
-                if current_cam == 1:
-                    exposure_cam = self.Camhigh
-                elif current_cam == 2:
-                    exposure_cam = self.Camhigh2
-                else:
-                    log.error("切痕检查: 灵敏度非0时仅支持高倍相机(current_cam=1/2), 当前为 {}".format(current_cam))
-                    return
-                ret, ret_content, grabbed, current_explosure_time = capture_with_temp_exposure(
-                    exposure_cam, explosure_time, discard_frames=2)
-                if ret != 0:
-                    log.error("切痕检查: 切痕曝光时间设置或取图失败: "+str(ret_content))
-                    if current_explosure_time is not None:
-                        restore_ret, restore_msg = restore_exposure(exposure_cam, current_explosure_time)
-                        if restore_ret != 0:
-                            log.error("切痕检查: 切痕曝光时间恢复失败: "+str(restore_msg))
-                    return
-                image = grabbed
-                log.info("切痕检查: 切痕曝光时间设置成功: "+str(explosure_time))
-            cutting_path_roi_width =int((10-cutting_path_roi_width)*(image_width/20))
-            cutting_path_roi_hight = int(cutting_path_roi_hight/2)
-            
-            if cutting_path_roi_hight <= 50 and cutting_path_roi_hight>0:
-                log.warning("切痕检查: 切痕roi高度过小,当前设定值为{}mm，最小值为:{}mm ".format((cutting_path_roi_hight*2*pixel_size/1000000),(50*2*pixel_size/1000000)))
-                cutting_path_roi_hight = 50
-                ret = 1
-            if cutting_path_roi_hight == 0:
-                cutting_path_roi_hight = int(standard_line_hight/2)+5
+            exposure_cam = self._high(current_cam) if cutting_sensitive_level else None
+            if cutting_sensitive_level != 0 and exposure_cam is None:
+                log.error("切痕检查: 灵敏度非0时仅支持高倍相机(current_cam=1/2), 当前为 {}".format(current_cam))
+                return
+            try:
+                if exposure_cam is not None:
+                    apply_exposure(exposure_cam, cutting_sensitive_level * 13500, discard=2)
+                    image = exposure_cam.Get_image()
+                    if image is None:
+                        log.error("切痕检查: 切痕曝光取图失败")
+                        return
+                    if image.ndim == 3:
+                        image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+                    image = image_preprocess(image, [
+                        self.Signals.decode("DT1155","DT1155","int"),
+                        self.Signals.decode("DT1156","DT1156","int"),
+                        self.Signals.decode("DT1157","DT1157","int"),
+                        self.Signals.decode("DT1158","DT1158","int"),
+                    ], current_cam)
+                    image_width, image_hight = image.shape[1], image.shape[0]
+                    image_center = [int(image_width/2), int(image_hight/2)]
+                    log.info("切痕检查: 切痕曝光时间设置成功: "+str(cutting_sensitive_level * 13500))
+
+                    
+                cutting_path_roi_width =int((10-cutting_path_roi_width)*(image_width/20))
+                cutting_path_roi_hight = int(cutting_path_roi_hight/2)
                 
-            if cutting_path_roi_width >500:
-                cutting_path_roi_width = 500 
+                if cutting_path_roi_hight <= 50 and cutting_path_roi_hight>0:
+                    log.warning("切痕检查: 切痕roi高度过小,当前设定值为{}mm，最小值为:{}mm ".format((cutting_path_roi_hight*2*pixel_size/1000000),(50*2*pixel_size/1000000)))
+                    cutting_path_roi_hight = 50
+                    ret = 1
+                if cutting_path_roi_hight == 0:
+                    cutting_path_roi_hight = int(standard_line_hight/2)+5
+                    
+                if cutting_path_roi_width >500:
+                    cutting_path_roi_width = 500 
 
-            #image_check = image[image_center[1]-cutting_path_roi_hight:image_center[1]+cutting_path_roi_hight,
-                                #image_center[0]-cutting_path_roi_width:image_center[0]+cutting_path_roi_width]
-            image_check = image
+                #image_check = image[image_center[1]-cutting_path_roi_hight:image_center[1]+cutting_path_roi_hight,
+                                    #image_center[0]-cutting_path_roi_width:image_center[0]+cutting_path_roi_width]
+                image_check = image
 
-            if cutting_path_block_hight < 10:
-                cutting_path_block_hight =10
-            if template_id == 105:
-                ret,ret_content,result_image,result = cutting_path_reflection(image_check,(cutting_path_roi_width,cutting_path_roi_hight,cutting_path_block_hight),"reflection")
-            else:
-                ret,ret_content,result_image,result = cutting_path_reflection(image_check,(cutting_path_roi_width,cutting_path_roi_hight,cutting_path_block_hight),"std")
-            if ret != 0:
-                print("cutting_path_roi_width:",cutting_path_roi_width,"cutting_path_roi_hight: ",cutting_path_roi_hight)
-                cv.imwrite("Data_failed\\failed_{}.bmp".format(time.time()),image_check)
-                log.error("切痕检查失败: "+ret_content)
-                text_color = (0,0,255)
-                template_id = -template_id
-                q_value = 0
-            else:
-                log.info("切痕检查成功")
-                template_id = -template_id
-                text_color = (0,255,0)
-                q_value = 100
-            text_list = [str(result[0]*self.pixel_size/1000)+"um",
-                            str(result[1]*self.pixel_size/1000)+"um",
-                            str(result[2]*self.pixel_size/1000)+"um",
-                            str(result[3]*self.pixel_size/1000)+"um",
-                            str(result[4]*self.pixel_size/1000)+"um",
-                            str(result[5])]
-            
-            color_list = [(0,255,0),(0,255,0),(0,255,0),(0,255,0),(0,255,0),(0,255,0)]
-            if result[0] > cut_path_shift_std and cut_path_shift_std != 0:
-                color_list[0] = (0,0,255)
-            if (result[1]>cut_path_widthMax_std or result[1]<cut_path_widthMin_std) and cut_path_widthMax_std != 0 and cut_path_widthMin_std != 0:
-                color_list[1] = (0,0,255)
-            if result[2]>cut_path_Twidth_std and cut_path_Twidth_std != 0:
-                color_list[2] = (0,0,255)
-            if result[3]>cut_path_half_w_std and cut_path_half_w_std != 0:
-                color_list[3] = (0,0,255)
-            if result[4]>cut_path_chip_max_std and cut_path_chip_max_std != 0:
-                color_list[4] = (0,0,255)
-            if result[5]>cut_path_c_area_std and cut_path_c_area_std != 0:
-                color_list[5] = (0,0,255)
-
-            #image[image_center[1]-cutting_path_roi_hight:image_center[1]+cutting_path_roi_hight,image_center[0]-cutting_path_roi_width:image_center[0]+cutting_path_roi_width] = result_image
-            self.image_show = Display_Devide(result_image,display_size,start_po,self.image_show,False,(0,0,0))
-            self.image_show = insert_text(self.image_show,text_list,start_po,1,text_color,"cutting_path",color_list)  
-            
-            self.Signals_Send.motify_encode("DT1211",template_id,"int")
-            self.Signals_Send.motify_encode("DT1212",start_po,"int")
-            self.Signals_Send.motify_encode("DT1213",display_size,"int")
-            self.Signals_Send.motify_encode("DT1230",q_value,"int")
-            self.Signals_Send.motify_encode("DT1231",result[0],"int")
-            self.Signals_Send.motify_encode("DT1232",result[1],"int")
-            self.Signals_Send.motify_encode("DT1233",result[2],"int")
-            self.Signals_Send.motify_encode("DT1234",result[3],"int")
-            self.Signals_Send.motify_encode("DT1235",result[4],"int")
-            self.Signals_Send.motify_encode("DT1236",result[5],"int")
-            
-            if exposure_cam is not None and current_explosure_time is not None:
-                ret,ret_content = restore_exposure(exposure_cam, current_explosure_time)
-                if ret != 0:
-                    log.error("切痕检查: 切痕曝光时间恢复失败: "+str(ret_content))
+                if cutting_path_block_hight < 10:
+                    cutting_path_block_hight =10
+                if template_id == 105:
+                    ret,ret_content,result_image,result = cutting_path_reflection(image_check,(cutting_path_roi_width,cutting_path_roi_hight,cutting_path_block_hight),"reflection")
                 else:
-                    log.info("切痕检查: 切痕曝光时间恢复成功: "+str(current_explosure_time))
-            pass
-       
+                    ret,ret_content,result_image,result = cutting_path_reflection(image_check,(cutting_path_roi_width,cutting_path_roi_hight,cutting_path_block_hight),"std")
+                if ret != 0:
+                    print("cutting_path_roi_width:",cutting_path_roi_width,"cutting_path_roi_hight: ",cutting_path_roi_hight)
+                    cv.imwrite("Data_failed\\failed_{}.bmp".format(time.time()),image_check)
+                    log.error("切痕检查失败: "+ret_content)
+                    text_color = (0,0,255)
+                    template_id = -template_id
+                    q_value = 0
+                else:
+                    log.info("切痕检查成功")
+                    template_id = -template_id
+                    text_color = (0,255,0)
+                    q_value = 100
+                text_list = [str(result[0]*self.pixel_size/1000)+"um",
+                                str(result[1]*self.pixel_size/1000)+"um",
+                                str(result[2]*self.pixel_size/1000)+"um",
+                                str(result[3]*self.pixel_size/1000)+"um",
+                                str(result[4]*self.pixel_size/1000)+"um",
+                                str(result[5])]
+                
+                color_list = [(0,255,0),(0,255,0),(0,255,0),(0,255,0),(0,255,0),(0,255,0)]
+                if result[0] > cut_path_shift_std and cut_path_shift_std != 0:
+                    color_list[0] = (0,0,255)
+                if (result[1]>cut_path_widthMax_std or result[1]<cut_path_widthMin_std) and cut_path_widthMax_std != 0 and cut_path_widthMin_std != 0:
+                    color_list[1] = (0,0,255)
+                if result[2]>cut_path_Twidth_std and cut_path_Twidth_std != 0:
+                    color_list[2] = (0,0,255)
+                if result[3]>cut_path_half_w_std and cut_path_half_w_std != 0:
+                    color_list[3] = (0,0,255)
+                if result[4]>cut_path_chip_max_std and cut_path_chip_max_std != 0:
+                    color_list[4] = (0,0,255)
+                if result[5]>cut_path_c_area_std and cut_path_c_area_std != 0:
+                    color_list[5] = (0,0,255)
+
+                #image[image_center[1]-cutting_path_roi_hight:image_center[1]+cutting_path_roi_hight,image_center[0]-cutting_path_roi_width:image_center[0]+cutting_path_roi_width] = result_image
+                self.image_show = Display_Devide(result_image,display_size,start_po,self.image_show,False,(0,0,0))
+                self.image_show = insert_text(self.image_show,text_list,start_po,1,text_color,"cutting_path",color_list)  
+                
+                self.Signals_Send.motify_encode("DT1211",template_id,"int")
+                self.Signals_Send.motify_encode("DT1212",start_po,"int")
+                self.Signals_Send.motify_encode("DT1213",display_size,"int")
+                self.Signals_Send.motify_encode("DT1230",q_value,"int")
+                self.Signals_Send.motify_encode("DT1231",result[0],"int")
+                self.Signals_Send.motify_encode("DT1232",result[1],"int")
+                self.Signals_Send.motify_encode("DT1233",result[2],"int")
+                self.Signals_Send.motify_encode("DT1234",result[3],"int")
+                self.Signals_Send.motify_encode("DT1235",result[4],"int")
+                self.Signals_Send.motify_encode("DT1236",result[5],"int")
+            finally:
+                if exposure_cam is not None:
+                    apply_exposure(exposure_cam, self.default_exposure.get(current_cam), discard=2)
+                    lv = self.Signals.decode("DT1039","DT1039","int")
+                    if self.Signals.decode("DT1163","DT1163","int") and lv:
+                        apply_exposure(exposure_cam, lv * 13500)
+
         #单张显示
         if action == "Take_One_photo":
             log.info("单张显示")
@@ -825,6 +834,10 @@ class WorkThread(QThread):
         
         self.connection_ret, self.Signals = self.COM.get_signals("DT1000","DT1200")
         self.connection_ret, self.Signals_Last = self.COM.get_signals("DT1000","DT1200")
+        self.default_exposure = {1: cam_params(self.Camhigh), 2: cam_params(self.Camhigh2)}
+        cam_id = self.Signals.decode("DT1001","DT1001","int")
+        self._sync_exposure(self.Signals.decode("DT1163","DT1163","int"), 0, cam_id, cam_id,
+                            self.Signals.decode("DT1039","DT1039","int"))
         self.image,self.pixel_size= self.get_image()
         
         
@@ -838,6 +851,10 @@ class WorkThread(QThread):
         while(True):
             start_time = time.time()
             self.connection_ret , self.Signals = self.COM.get_signals("DT1000","DT1200")
+            self._sync_exposure(
+                self.Signals.decode("DT1163","DT1163","int"), self.Signals_Last.decode("DT1163","DT1163","int"),
+                self.Signals.decode("DT1001","DT1001","int"), self.Signals_Last.decode("DT1001","DT1001","int"),
+                self.Signals.decode("DT1039","DT1039","int"))
             self.image,self.pixel_size= self.get_image()
             # 统一退出检查：仅 COM/图像失败退出；地图 FTP 失败已回退本地缓存，不因此退出
             if (self.connection_ret == 1) or (self.image is None):

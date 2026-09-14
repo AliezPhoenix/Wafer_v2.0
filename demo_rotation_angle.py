@@ -78,6 +78,7 @@ def calculate_image_rotation_angle(points_2d_array):
             if points_2d_array[row][col] is not None:
                 column_points.append(points_2d_array[row][col])
         
+        
         # 如果该列有至少2个点，计算角度
         if len(column_points) >= 2:
             # 按y坐标排序
