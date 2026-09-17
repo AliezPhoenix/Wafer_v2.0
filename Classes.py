@@ -17,6 +17,23 @@ import logging
 import queue
 sys.path.append("../DLL")
 
+def _read_zoom_factor() -> float:
+    try:
+        path = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), "zoom.txt")
+        z = float(open(path, "r", encoding="utf-8").read().strip())
+        return z if z > 1.0 else 1.0
+    except Exception:
+        return 1.0
+
+def _center_zoom(img: np.ndarray, zoom: float) -> np.ndarray:
+    if img is None or zoom <= 1.0:
+        return img
+    h, w = img.shape[:2]
+    rz = cv.resize(img, (int(w * zoom), int(h * zoom)), interpolation=cv.INTER_LINEAR)
+    x0 = (rz.shape[1] - w) // 2
+    y0 = (rz.shape[0] - h) // 2
+    return rz[y0:y0 + h, x0:x0 + w]
+
 class WorkThread(QThread):
     _shut_down_signal = pyqtSignal(bool)
     def __init__(self, **kwargs):
@@ -767,6 +784,7 @@ class WorkThread(QThread):
                 self.Signals_Send.motify_encode("DT1384",zoom_size,"int")
         
         # 检查 QLabel 是否有效，并安全地设置图像
+        zoom = _read_zoom_factor()
         if image_pix_map is not None:
             try:
                 # 检查 QLabel 是否仍然有效
@@ -774,7 +792,12 @@ class WorkThread(QThread):
                     # 尝试访问对象的属性来检查是否已被删除
                     try:
                         _ = self.image_show_lable.isVisible()
-                        self.image_show_lable.setPixmap(QPixmap.fromImage(image_pix_map))
+                        pm = QPixmap.fromImage(image_pix_map)
+                        if zoom > 1.0:
+                            w, h = pm.width(), pm.height()
+                            pm = pm.scaled(int(w * zoom), int(h * zoom), Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+                            pm = pm.copy((pm.width() - w) // 2, (pm.height() - h) // 2, w, h)
+                        self.image_show_lable.setPixmap(pm)
                     except RuntimeError as e:
                         # QLabel 已被删除，记录错误但继续执行
                         log.warning(f"QLabel 对象已被删除，无法更新显示: {e}")
@@ -799,6 +822,7 @@ class WorkThread(QThread):
                 else:
                     # 其他模式使用 image_show
                     display_image = self.image_show.copy()
+                display_image = _center_zoom(display_image, zoom)
                 
                 # 编码为JPEG格式
                 ret, jpeg = cv.imencode('.jpg', display_image)
